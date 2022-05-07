@@ -1,5 +1,6 @@
 ﻿using Assignment2Project.Areas.Admin.Models;
 using Assignment2Project.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Assignment2Project.Areas.Admin.Controllers
 {
-    
+    [Authorize(Roles = "Estates_Admin")]
     [Area("Admin")]
     public class UserRolesController : Controller
     {
