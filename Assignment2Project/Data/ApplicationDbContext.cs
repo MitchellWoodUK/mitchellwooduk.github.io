@@ -7,6 +7,8 @@ namespace Assignment2Project.Data
 {
     public class ApplicationDbContext : IdentityDbContext<CustomUserModel>
     {
+        public DbSet<InstitutionModel> Institutions { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
