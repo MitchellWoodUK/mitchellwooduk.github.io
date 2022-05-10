@@ -100,9 +100,9 @@ namespace Assignment2Project.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ESTATES.COM",
                             NormalizedUserName = "ADMIN@ESTATES.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGbjMvRF2voQocE/8u5vmBxVWOnxTwkE55J5pvelRh+/dtTGzBoCH5CvSPzKFXuqFQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEL6af2DL6QH6NvrznMBn0AhZ/QE0p9NP7Ob7o7HhPvtSYBMQuGcIt0BFZiICG6VQSg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6b782e93-26ca-481c-b857-f8831fe9b101",
+                            SecurityStamp = "871caff2-4525-424d-8f50-ea7c28fb7d96",
                             Sname = "Admin",
                             TwoFactorEnabled = false,
                             UserName = "admin@estates.com"

@@ -1,4 +1,5 @@
 ﻿using Assignment2Project.Areas.Admin.Models;
+using Assignment2Project.Data;
 using Assignment2Project.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,10 +15,12 @@ namespace Assignment2Project.Areas.Admin.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<CustomUserModel> _userManager;
-        public UserRolesController(RoleManager<IdentityRole> roleManager, UserManager<CustomUserModel> userManager)
+        private readonly ApplicationDbContext _db;
+        public UserRolesController(RoleManager<IdentityRole> roleManager, UserManager<CustomUserModel> userManager, ApplicationDbContext db)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _db = db;
         }
 
         
@@ -53,6 +56,25 @@ namespace Assignment2Project.Areas.Admin.Controllers
                 vm.User = user;
                 vm.Role = role;
                 vm.IsInRole = await _userManager.IsInRoleAsync(user, role.Name);
+                viewModels.Add(vm);
+            }
+            return View(viewModels);
+        }
+
+        //GET
+        public async Task<IActionResult> ManageInstitution(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return RedirectToAction("Index");
+            }
+            var viewModels = new List<ManageUserRoleViewModel>();
+            foreach (var institution in _db.Institutions)
+            {
+                var vm = new ManageUserRoleViewModel();
+                vm.User = user;
+                vm.Institution = institution;
                 viewModels.Add(vm);
             }
             return View(viewModels);

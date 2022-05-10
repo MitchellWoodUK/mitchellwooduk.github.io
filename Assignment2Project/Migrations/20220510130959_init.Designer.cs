@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assignment2Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220507162235_seedadmin")]
-    partial class seedadmin
+    [Migration("20220510130959_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -102,13 +102,39 @@ namespace Assignment2Project.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ESTATES.COM",
                             NormalizedUserName = "ADMIN@ESTATES.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI16wXriiTCcl/HwhndJA9lGVkCDfHAITqY2SfKgdWRtiFIP78//+L37g74Dg8t5PA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEL6af2DL6QH6NvrznMBn0AhZ/QE0p9NP7Ob7o7HhPvtSYBMQuGcIt0BFZiICG6VQSg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2989f79b-ebb6-4a67-b474-072f15728c64",
+                            SecurityStamp = "871caff2-4525-424d-8f50-ea7c28fb7d96",
                             Sname = "Admin",
                             TwoFactorEnabled = false,
                             UserName = "admin@estates.com"
                         });
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.InstitutionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TelephoneNum")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Institutions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

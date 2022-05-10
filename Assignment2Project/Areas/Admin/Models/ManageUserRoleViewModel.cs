@@ -8,5 +8,6 @@ namespace Assignment2Project.Areas.Admin.Models
         public CustomUserModel User { get; set; }
         public IdentityRole Role { get; set; }
         public bool IsInRole { get; set; }
+        public InstitutionModel Institution { get; set; }
     }
 }

@@ -15,15 +15,15 @@
         currentUser = await UserManager.FindByEmailAsync(User.Identity.Name);
         if (await UserManager.IsInRoleAsync(currentUser, "Estates_Admin"))
         {
-            <div class="dropdown">
+            <div class="dropdown mx-2">
                 <a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                     Admin Menu
                 </a>
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <li><a class="nav-link" asp-area="Admin" asp-controller="RolesManager" asp-action="Index">Roles</a></li>
-                    <li><a class="nav-link" asp-area="Admin" asp-controller="UserRoles" asp-action="Index">Users</a></li>
-                    <li><a class="nav-link" asp-area="Admin" asp-controller="Institution" asp-action="Index">Institution</a></li>
+                    <li><a class="nav-link text-dark" asp-area="Admin" asp-controller="RolesManager" asp-action="Index">Roles</a></li>
+                    <li><a class="nav-link text-dark" asp-area="Admin" asp-controller="UserRoles" asp-action="Index">Users</a></li>
+                    <li><a class="nav-link text-dark" asp-area="Admin" asp-controller="Institution" asp-action="Index">Institution</a></li>
                 </ul>
             </div>
         }
@@ -31,11 +31,11 @@
 
 
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                <button type="submit" class="nav-link btn btn-link text-light">Logout</button>
             </form>
         </li>
 

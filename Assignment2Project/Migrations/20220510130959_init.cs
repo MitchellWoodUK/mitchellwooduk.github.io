@@ -28,6 +28,8 @@ namespace Assignment2Project.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Fname = table.Column<string>(type: "TEXT", nullable: false),
+                    Sname = table.Column<string>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -46,6 +48,21 @@ namespace Assignment2Project.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Institutions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Address = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
+                    TelephoneNum = table.Column<string>(type: "TEXT", maxLength: 11, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Institutions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,6 +171,51 @@ namespace Assignment2Project.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "1a43ecdc-e161-4cc2-8476-004e461304fd", "48c7b087-13b9-46bd-b10f-9566e89276ab", "Estates_Admin", "ESTATES_ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "35981c10-0352-46be-9b0b-769ce6d85af9", "16e1cc37-4269-4096-880c-53b14399beff", "Institution_Staff", "INSTITUTION_STAFF" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "875ea618-c65e-4eac-9c0f-4a59f1ddaa2c", "7684f586-4a4d-4b14-b09c-a1a936cd4c8d", "Estates_Staff", "ESTATES_STAFF" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "fd32bd40-c6ba-474a-b959-55a3a8941347", "3a8cfa8f-22b3-4323-ae1a-11884ac4ba6d", "Institution_Manager", "INSTITUTION_MANAGER" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "Fname", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Sname", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "1a4df6c2-e479-40eb-8135-d492174424f2", 0, "76a518b4-92f0-4b97-b4c2-86bb109ef976", "admin@estates.com", false, "Admin", false, null, "ADMIN@ESTATES.COM", "ADMIN@ESTATES.COM", "AQAAAAEAACcQAAAAEL6af2DL6QH6NvrznMBn0AhZ/QE0p9NP7Ob7o7HhPvtSYBMQuGcIt0BFZiICG6VQSg==", null, false, "871caff2-4525-424d-8f50-ea7c28fb7d96", "Admin", false, "admin@estates.com" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "1a43ecdc-e161-4cc2-8476-004e461304fd", "1a4df6c2-e479-40eb-8135-d492174424f2" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "35981c10-0352-46be-9b0b-769ce6d85af9", "1a4df6c2-e479-40eb-8135-d492174424f2" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "875ea618-c65e-4eac-9c0f-4a59f1ddaa2c", "1a4df6c2-e479-40eb-8135-d492174424f2" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "fd32bd40-c6ba-474a-b959-55a3a8941347", "1a4df6c2-e479-40eb-8135-d492174424f2" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -208,6 +270,9 @@ namespace Assignment2Project.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Institutions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
