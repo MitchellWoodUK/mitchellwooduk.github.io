@@ -6,6 +6,8 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Assignment2Project.Data;
+using Assignment2Project.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,15 +16,18 @@ namespace Assignment2Project.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<CustomUserModel> _userManager;
+        private readonly SignInManager<CustomUserModel> _signInManager;
+        private readonly ApplicationDbContext _db;
 
         public IndexModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<CustomUserModel> userManager,
+            SignInManager<CustomUserModel> signInManager,
+            ApplicationDbContext db)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _db = db;
         }
 
         /// <summary>
@@ -58,9 +63,13 @@ namespace Assignment2Project.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+            [Display(Name = "First Name")]
+            public string Fname { get; set; }
+            [Display(Name = "Surname")]
+            public string Sname { get; set; }
         }
 
-        private async Task LoadAsync(IdentityUser user)
+        private async Task LoadAsync(CustomUserModel user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
@@ -69,6 +78,8 @@ namespace Assignment2Project.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
+                Fname = user.Fname,
+                Sname = user.Sname,
                 PhoneNumber = phoneNumber
             };
         }
@@ -109,6 +120,16 @@ namespace Assignment2Project.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
+            var currentUser = await _db.Users.FindAsync(user.Id);
+            if(currentUser == null)
+            {
+                return RedirectToPage();
+            }
+            currentUser.Fname = Input.Fname;
+            currentUser.Sname = Input.Sname;
+            await _db.SaveChangesAsync();
+
+
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

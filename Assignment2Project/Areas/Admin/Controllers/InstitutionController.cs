@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assignment2Project.Data;
 using Assignment2Project.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Assignment2Project.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Estates_Admin")]
     [Area("Admin")]
     public class InstitutionController : Controller
     {

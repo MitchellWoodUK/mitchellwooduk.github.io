@@ -5,6 +5,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Assignment2Project.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,11 +15,11 @@ namespace Assignment2Project.Areas.Identity.Pages.Account.Manage
 {
     public class GenerateRecoveryCodesModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<CustomUserModel> _userManager;
         private readonly ILogger<GenerateRecoveryCodesModel> _logger;
 
         public GenerateRecoveryCodesModel(
-            UserManager<IdentityUser> userManager,
+            UserManager<CustomUserModel> userManager,
             ILogger<GenerateRecoveryCodesModel> logger)
         {
             _userManager = userManager;

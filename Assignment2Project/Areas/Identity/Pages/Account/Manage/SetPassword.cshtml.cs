@@ -5,6 +5,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Assignment2Project.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,12 +14,12 @@ namespace Assignment2Project.Areas.Identity.Pages.Account.Manage
 {
     public class SetPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<CustomUserModel> _userManager;
+        private readonly SignInManager<CustomUserModel> _signInManager;
 
         public SetPasswordModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<CustomUserModel> userManager,
+            SignInManager<CustomUserModel> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

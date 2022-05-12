@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Assignment2Project.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +17,14 @@ namespace Assignment2Project.Areas.Identity.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly IUserStore<IdentityUser> _userStore;
+        private readonly UserManager<CustomUserModel> _userManager;
+        private readonly SignInManager<CustomUserModel> _signInManager;
+        private readonly IUserStore<CustomUserModel> _userStore;
 
         public ExternalLoginsModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            IUserStore<IdentityUser> userStore)
+            UserManager<CustomUserModel> userManager,
+            SignInManager<CustomUserModel> signInManager,
+            IUserStore<CustomUserModel> userStore)
         {
             _userManager = userManager;
             _signInManager = signInManager;
