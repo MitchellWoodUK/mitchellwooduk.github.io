@@ -1,6 +1,9 @@
-﻿using Assignment2Project.Data;
+﻿using Assignment2Project.Areas.Admin.Models;
+using Assignment2Project.Data;
+using Assignment2Project.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Assignment2Project.Areas.Admin.Controllers
@@ -20,6 +23,22 @@ namespace Assignment2Project.Areas.Admin.Controllers
         {
             return View(await _db.Rooms.ToListAsync());
         }
+
+        public IActionResult Create()
+        {
+            RoomViewModel roomViewModel = new RoomViewModel()
+            {
+                Room = new RoomModel(),
+                CategoryList = _db.RoomCategories.Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                })
+            };
+            return View(roomViewModel);
+        }
+
+
 
 
 

@@ -9,6 +9,7 @@ namespace Assignment2Project.Data
     {
         public DbSet<InstitutionModel> Institutions { get; set; }
         public DbSet<RoomModel> Rooms { get; set; }
+        public DbSet<RoomCategoryModel> RoomCategories { get; set;}
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

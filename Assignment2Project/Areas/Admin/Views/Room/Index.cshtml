@@ -1,11 +1,41 @@
 ﻿@model IEnumerable<Assignment2Project.Models.RoomModel>
 
 @{
-    ViewData["Title"] = "Rooms"; 
+    ViewData["Title"] = "Rooms";
 }
 
 <h1>Room Management</h1>
 
-<div>
-    <a asp-action="Create" class="btn btn-info">Create New</a>
+<div class="mt-3">
+    <a asp-action="Create" class="btn btn-info">Create New Room</a>
+    <a asp-controller="RoomCategory" asp-action="Index" class="btn btn-info">Manage Room Categories</a>
 </div>
+
+
+<table class="table table-striped mt-4">
+    <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Institution</th>
+            <th>Manage</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var room in Model)
+        {
+            <tr>
+                <td>@room.Id</td>
+                <td>@room.Name</td>
+                <td>@room.Institution.Name</td>
+                <td>
+                    <a class="btn btn-danger" asp-action="EditRoom" asp-route-id="@room.Id">Edit</a>
+                </td>
+                <td>
+                    <a class="btn btn-danger" asp-action="DeleteRoom" asp-route-id="@room.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
