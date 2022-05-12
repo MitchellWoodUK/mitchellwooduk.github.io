@@ -3,6 +3,7 @@ using System;
 using Assignment2Project.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assignment2Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220512082705_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
@@ -106,9 +108,9 @@ namespace Assignment2Project.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ESTATES.COM",
                             NormalizedUserName = "ADMIN@ESTATES.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJ0XkjxJSwEspXxUQAP+6Xq1kyab1nGXc7JRiDmL6x0ZmUk372/q4M6G6F+ipx8gyQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEF9oRq9N2VHgx+n5A4T6lvyqaHbaR+70Wm2WOFVk+yeX9mN+073SAs5AEFJUKnOq+w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1ad22855-90f5-4ce4-9bee-208da2d3fb8c",
+                            SecurityStamp = "ac1d0c2d-b48f-4c0c-9345-aa7ac33e3b07",
                             Sname = "Admin",
                             TwoFactorEnabled = false,
                             UserName = "admin@estates.com"

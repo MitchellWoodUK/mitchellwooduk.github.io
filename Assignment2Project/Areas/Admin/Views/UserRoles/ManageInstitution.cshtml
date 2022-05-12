@@ -1,5 +1,5 @@
 ﻿@using Assignment2Project.Areas.Admin.Models
-@model List<ManageUserRoleViewModel>
+@model ManageInstitutionViewModel
 @{
     ViewData["Title"] = "ManageInstitution";
 }
@@ -7,17 +7,17 @@
 <form method="post">
     <div class="card">
         <div class="card-header">
-            <h2>Manage @Model.FirstOrDefault().User.Fname 's Institution</h2>
+            <h2>Manage @Model.User.Fname 's Institution</h2>
         </div>
         <div class="card-body">
-             <select class="form-select" aria-label="Default select example">
-                <option selected>Institution</option>
-                @for (int i = 0; i < Model.Count; i++)
-                {
-                    <option value="@Model[i].Institution.Name">@Model[i].Institution.Name</option>
-                
-                }               
-            </select>
+            <h5>Select User's Institution:</h5>
+
+              <input type="hidden" asp-for="@Model.User.Id"/>
+
+              @Html.DropDownListFor(m => m.User.InstitutionId, Model.InstitutionList, "Select a institution", new {@class = "form-select"})
+
+              <span asp-validation-for="User.InstitutionId" class="text-danger"></span>
+
         </div>
         <div class="card-footer">
             <button class="btn btn-info" type="submit">Update</button>

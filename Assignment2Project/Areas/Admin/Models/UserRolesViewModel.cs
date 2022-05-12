@@ -6,5 +6,7 @@ namespace Assignment2Project.Areas.Admin.Models
     {
         public CustomUserModel User { get; set; }
         public List<string> Roles { get; set; }
+
+        public InstitutionModel Institution { get; set; }
     }
 }

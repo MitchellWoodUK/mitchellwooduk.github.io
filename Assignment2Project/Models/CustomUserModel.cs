@@ -11,8 +11,9 @@ namespace Assignment2Project.Models
         [Required]
         public string Sname { get; set; }
 
-        //public int InstitutionId { get; set; }
-        //[ForeignKey("InstitutionId")]
-        //public InstitutionModel Institution { get; set; }
+        
+        public int InstitutionId { get; set; }
+        [ForeignKey("InstitutionId")]
+        public InstitutionModel Institution { get; set; }
     }
 }

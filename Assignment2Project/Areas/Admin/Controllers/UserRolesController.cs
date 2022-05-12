@@ -4,6 +4,7 @@ using Assignment2Project.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
@@ -23,24 +24,31 @@ namespace Assignment2Project.Areas.Admin.Controllers
             _db = db;
         }
 
-        
+
         public async Task<IActionResult> Index()
         {
             var users = await _userManager.Users.ToListAsync();
             var VMlist = new List<UserRolesViewModel>();
-            foreach(var user in users)
+
+            foreach (var user in users)
             {
-                var currentVM = new UserRolesViewModel()
+                var institution = _db.Institutions.FirstOrDefault(i => i.Id == user.InstitutionId);
+                if (institution != null)
                 {
-                    User = user,
-                    Roles = new List<string>(await _userManager.GetRolesAsync(user))
-                };
-                VMlist.Add(currentVM);
+                    var currentVM = new UserRolesViewModel()
+                    {
+                        User = user,
+                        Roles = new List<string>(await _userManager.GetRolesAsync(user)),
+                        Institution = institution
+                    };
+                    VMlist.Add(currentVM);
+                }
+
             }
             return View(VMlist);
         }
 
-        
+
         //GET
         public async Task<IActionResult> Manage(string id)
         {
@@ -50,7 +58,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
             var viewModels = new List<ManageUserRoleViewModel>();
-            foreach(var role in _roleManager.Roles)
+            foreach (var role in _roleManager.Roles)
             {
                 var vm = new ManageUserRoleViewModel();
                 vm.User = user;
@@ -65,28 +73,33 @@ namespace Assignment2Project.Areas.Admin.Controllers
         public async Task<IActionResult> ManageInstitution(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
+            var institution = await _db.Institutions.ToListAsync();
+
             if (user == null)
             {
                 return RedirectToAction("Index");
             }
-            var viewModels = new List<ManageUserRoleViewModel>();
-            foreach (var institution in _db.Institutions)
+
+            ManageInstitutionViewModel viewModels = new ManageInstitutionViewModel()
             {
-                var vm = new ManageUserRoleViewModel();
-                vm.User = user;
-                vm.Institution = institution;
-                viewModels.Add(vm);
-            }
+                User = user,
+                InstitutionList = _db.Institutions.Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                })
+            };
+
             return View(viewModels);
         }
 
         [HttpPost]
         public async Task<IActionResult> Manage(List<ManageUserRoleViewModel> model)
         {
-            if(model != null && model.Count >= 1)
+            if (model != null && model.Count >= 1)
             {
                 var user = await _userManager.FindByIdAsync(model[0].User.Id);
-                if(user != null)
+                if (user != null)
                 {
                     var roles = await _userManager.GetRolesAsync(user);
                     var result = await _userManager.RemoveFromRolesAsync(user, roles);
@@ -115,10 +128,36 @@ namespace Assignment2Project.Areas.Admin.Controllers
             }
         }
 
+        //Post function to update the institution for the user.
+        [HttpPost]
+        public async Task<IActionResult> ManageInstitution(ManageInstitutionViewModel model)
+        {
+            if (model != null)
+            {
+                //Finds the user from the model.
+                var user = await _userManager.FindByIdAsync(model.User.Id);
+
+                if (user != null)
+                {
+                    //Changes the institution Id to the new selected option.
+                    user.InstitutionId = model.User.InstitutionId;
+                    //Updates the database.
+                    _db.Users.Update(user);
+                    await _db.SaveChangesAsync();
+                    return RedirectToAction("Manage");
+                }
+                else
+                {
+                    return RedirectToAction("Manage");
+                }
+            }
+            return RedirectToAction("Manage");
+
+        }
         public async Task<IActionResult> Delete(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            if(user == null)
+            if (user == null)
             {
                 return RedirectToAction("Index");
             }

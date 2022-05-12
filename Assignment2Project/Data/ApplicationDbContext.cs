@@ -18,6 +18,7 @@ namespace Assignment2Project.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            SeedInstitution(builder);
             SeedAdmin(builder);
             SeedRoles(builder);
             SeedUserRoles(builder);
@@ -63,6 +64,19 @@ namespace Assignment2Project.Data
             );
         }
 
+
+        private void SeedInstitution(ModelBuilder builder)
+        {
+            InstitutionModel institution = new InstitutionModel()
+            {
+                Id = 1,
+                Name = "Default",
+                TelephoneNum = String.Empty,
+                Address = String.Empty
+            };
+            builder.Entity<InstitutionModel>().HasData(institution);
+        }
+
         private void SeedAdmin(ModelBuilder builder)
         {
             PasswordHasher<CustomUserModel> hasher = new PasswordHasher<CustomUserModel>();
@@ -77,7 +91,9 @@ namespace Assignment2Project.Data
             user.Sname = "Admin";
             user.ConcurrencyStamp = "76a518b4-92f0-4b97-b4c2-86bb109ef976";
             user.PasswordHash = hasher.HashPassword(user, "Admin123!");
+            user.InstitutionId = 1;
             builder.Entity<CustomUserModel>().HasData(user);
+
         }
 
         private void SeedUserRoles(ModelBuilder builder)

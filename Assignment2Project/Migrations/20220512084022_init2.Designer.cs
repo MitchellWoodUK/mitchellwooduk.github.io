@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assignment2Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220510130959_init")]
-    partial class init
+    [Migration("20220512084022_init2")]
+    partial class init2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,6 +41,9 @@ namespace Assignment2Project.Migrations
                     b.Property<string>("Fname")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("InstitutionId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
@@ -81,6 +84,8 @@ namespace Assignment2Project.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("InstitutionId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -99,12 +104,13 @@ namespace Assignment2Project.Migrations
                             Email = "admin@estates.com",
                             EmailConfirmed = false,
                             Fname = "Admin",
+                            InstitutionId = 1,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ESTATES.COM",
                             NormalizedUserName = "ADMIN@ESTATES.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEL6af2DL6QH6NvrznMBn0AhZ/QE0p9NP7Ob7o7HhPvtSYBMQuGcIt0BFZiICG6VQSg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJ0XkjxJSwEspXxUQAP+6Xq1kyab1nGXc7JRiDmL6x0ZmUk372/q4M6G6F+ipx8gyQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "871caff2-4525-424d-8f50-ea7c28fb7d96",
+                            SecurityStamp = "1ad22855-90f5-4ce4-9bee-208da2d3fb8c",
                             Sname = "Admin",
                             TwoFactorEnabled = false,
                             UserName = "admin@estates.com"
@@ -135,6 +141,15 @@ namespace Assignment2Project.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Institutions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "",
+                            Name = "Default",
+                            TelephoneNum = ""
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -319,6 +334,17 @@ namespace Assignment2Project.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.CustomUserModel", b =>
+                {
+                    b.HasOne("Assignment2Project.Models.InstitutionModel", "Institution")
+                        .WithMany()
+                        .HasForeignKey("InstitutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Institution");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

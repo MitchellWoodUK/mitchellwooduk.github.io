@@ -121,7 +121,7 @@ namespace Assignment2Project.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new CustomUserModel { UserName = Input.Email, Email = Input.Email, Fname = Input.Fname, Sname = Input.Sname};
-                
+                user.InstitutionId = 1;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
