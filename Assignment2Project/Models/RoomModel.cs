@@ -16,5 +16,9 @@ namespace Assignment2Project.Models
 
         [ForeignKey("InstitutionId")]
         public InstitutionModel Institution { get; set; }
+
+        public int CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        public RoomCategoryModel Category { get; set; }
     }
 }

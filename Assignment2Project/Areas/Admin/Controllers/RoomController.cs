@@ -21,7 +21,8 @@ namespace Assignment2Project.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _db.Rooms.ToListAsync());
+            var rooms = await _db.Rooms.Include("Category").Include("Institution").ToListAsync();
+            return View(rooms);
         }
 
         public IActionResult Create()
@@ -33,15 +34,47 @@ namespace Assignment2Project.Areas.Admin.Controllers
                 {
                     Text = c.Name,
                     Value = c.Id.ToString()
+                }),
+                InstitutionList = _db.Institutions.Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
                 })
             };
             return View(roomViewModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Create(RoomViewModel model)
+        {
+            if (model != null)
+            {
+                RoomModel roomModel = new RoomModel();
+                roomModel.Name = model.Room.Name;
+                roomModel.InstitutionId = model.Room.InstitutionId;
+                roomModel.CategoryId = model.Room.CategoryId;
+                await _db.Rooms.AddAsync(roomModel);
+                await _db.SaveChangesAsync();
+                return View(nameof(Index));
+            }
+            return View(nameof(Index));
 
+        }
 
+        public async Task<IActionResult> Edit(int id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var roomModel = await _db.Rooms.FindAsync(id);
+            if (roomModel == null)
+            {
+                return NotFound();
+            }
 
-
+            return View(roomModel);
+        }
 
 
     }

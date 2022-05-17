@@ -7,5 +7,6 @@ namespace Assignment2Project.Areas.Admin.Models
     {
         public RoomModel Room { get; set; }
         public IEnumerable<SelectListItem> CategoryList { get; set; }
+        public IEnumerable<SelectListItem> InstitutionList { get; set; }
     }
 }
