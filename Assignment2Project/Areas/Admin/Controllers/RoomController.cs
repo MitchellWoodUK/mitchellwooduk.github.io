@@ -53,11 +53,12 @@ namespace Assignment2Project.Areas.Admin.Controllers
                 roomModel.Name = model.Room.Name;
                 roomModel.InstitutionId = model.Room.InstitutionId;
                 roomModel.CategoryId = model.Room.CategoryId;
+
                 await _db.Rooms.AddAsync(roomModel);
                 await _db.SaveChangesAsync();
-                return View(nameof(Index));
+                return RedirectToAction(nameof(Index));
             }
-            return View(nameof(Index));
+            return RedirectToAction(nameof(Index));
 
         }
 
@@ -72,8 +73,51 @@ namespace Assignment2Project.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            RoomViewModel roomViewModel = new RoomViewModel()
+            {
+                Room = roomModel,
+                CategoryList = _db.RoomCategories.Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                }),
+                InstitutionList = _db.Institutions.Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                })
+            };
 
-            return View(roomModel);
+            return View(roomViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(RoomViewModel model)
+        {
+            if (model != null)
+            {
+                RoomModel roomModel = new RoomModel();
+                roomModel.Name = model.Room.Name;
+                roomModel.InstitutionId = model.Room.InstitutionId;
+                roomModel.CategoryId = model.Room.CategoryId;
+
+                _db.Rooms.Update(roomModel);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var room = await _db.Rooms.FindAsync(id);
+            if(room == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+             _db.Remove(room);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
 

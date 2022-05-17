@@ -1,15 +1,16 @@
-﻿
-@using Assignment2Project.Areas.Admin.Models
+﻿@using Assignment2Project.Areas.Admin.Models
 @model RoomViewModel
 
 @{
-    ViewData["Title"] = "Create Room";
+    ViewData["Title"] = "Edit Room";
 }
 
 <div>
-    <form method="post" asp-action="Create">
+    <form method="post" asp-action="Edit">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <h1 class="mb-3">Create a New Room</h1>
+        <input type="hidden" asp-for="Room.Id" name="id" />
+
+        <h1 class="mb-3">Edit Room</h1>
         <hr />
         <div class="my-3">
             @Html.DropDownListFor(m => m.Room.CategoryId, Model.CategoryList, "Select a category", new {@class = "form-select"})
@@ -24,7 +25,7 @@
             <span asp-validation-for="Room.Name" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <button type="submit" class="btn btn-success w-100">Upload</button>
+            <button type="submit" class="btn btn-success w-100">Edit</button>
         </div>
         <div>
             <a asp-action="Index" class="btn btn-primary mt-3">Back to List</a>

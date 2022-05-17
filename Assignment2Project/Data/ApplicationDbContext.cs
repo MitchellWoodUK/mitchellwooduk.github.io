@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Assignment2Project.Areas.Admin.Models;
 
 namespace Assignment2Project.Data
 {
@@ -10,6 +11,8 @@ namespace Assignment2Project.Data
         public DbSet<InstitutionModel> Institutions { get; set; }
         public DbSet<RoomModel> Rooms { get; set; }
         public DbSet<RoomCategoryModel> RoomCategories { get; set;}
+        public DbSet<AssetModel> Assets { get; set; }
+        public DbSet<AssetCategoryModel> AssetCategories { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -129,6 +132,8 @@ namespace Assignment2Project.Data
                }
                );
         }
+
+        public DbSet<Assignment2Project.Areas.Admin.Models.AssetCategoryModel>? AssetCategoryModel { get; set; }
 
     }
 }

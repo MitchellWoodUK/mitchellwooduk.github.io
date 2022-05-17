@@ -3,6 +3,7 @@ using System;
 using Assignment2Project.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,54 +11,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assignment2Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220517133848_createroom")]
+    partial class createroom
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
-
-            modelBuilder.Entity("Assignment2Project.Areas.Admin.Models.AssetCategoryModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AssetCategoryModel");
-                });
-
-            modelBuilder.Entity("Assignment2Project.Models.AssetModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("RoomId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("RoomId");
-
-                    b.ToTable("Assets");
-                });
 
             modelBuilder.Entity("Assignment2Project.Models.CustomUserModel", b =>
                 {
@@ -148,9 +108,9 @@ namespace Assignment2Project.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ESTATES.COM",
                             NormalizedUserName = "ADMIN@ESTATES.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECnW3OnNsKwlS1RMtgLNCREFBsogMLunmMbQO1lsQrxJJ4oQYOwWitxHbxctkNfIBw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIzhsk2RCVc1fIBc4ESsrKUON1QVXtBiIpu/gRhulUus0Ktndamrozx7my1vIMVk+g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "03a6a04d-5612-4611-a6db-1feca13f13a7",
+                            SecurityStamp = "8fc077aa-ec63-43bc-ba00-380f5fd81d67",
                             Sname = "Admin",
                             TwoFactorEnabled = false,
                             UserName = "admin@estates.com"
@@ -416,25 +376,6 @@ namespace Assignment2Project.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Assignment2Project.Models.AssetModel", b =>
-                {
-                    b.HasOne("Assignment2Project.Areas.Admin.Models.AssetCategoryModel", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Assignment2Project.Models.RoomModel", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Assignment2Project.Models.CustomUserModel", b =>
