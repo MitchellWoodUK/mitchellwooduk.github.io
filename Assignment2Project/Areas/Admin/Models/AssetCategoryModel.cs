@@ -7,7 +7,7 @@ namespace Assignment2Project.Areas.Admin.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        [Display(Name = "Asset Name")]
+        [Display(Name = "Category Name")]
         [MaxLength(50)]
         public string Name { get; set; }
     }
