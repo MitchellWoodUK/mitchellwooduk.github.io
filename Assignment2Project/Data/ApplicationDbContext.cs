@@ -135,7 +135,7 @@ namespace Assignment2Project.Data
                );
         }
 
-        public DbSet<Assignment2Project.Areas.Admin.Models.AssetCategoryModel>? AssetCategoryModel { get; set; }
+        
 
     }
 }

@@ -11,13 +11,55 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assignment2Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220512084022_init2")]
-    partial class init2
+    [Migration("20220519115312_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
+
+            modelBuilder.Entity("Assignment2Project.Areas.Admin.Models.AssetCategoryModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AssetCategories");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.AssetModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("Assets");
+                });
 
             modelBuilder.Entity("Assignment2Project.Models.CustomUserModel", b =>
                 {
@@ -108,13 +150,45 @@ namespace Assignment2Project.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ESTATES.COM",
                             NormalizedUserName = "ADMIN@ESTATES.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJ0XkjxJSwEspXxUQAP+6Xq1kyab1nGXc7JRiDmL6x0ZmUk372/q4M6G6F+ipx8gyQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELENyk9UVmakePPV1E0XtPZZisKaEj6xgsHJc2SVC3m2ZEDrxOvm8qLbNJc87Cy/GQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1ad22855-90f5-4ce4-9bee-208da2d3fb8c",
+                            SecurityStamp = "dc9515de-960c-4a59-865c-698b2003b9ce",
                             Sname = "Admin",
                             TwoFactorEnabled = false,
                             UserName = "admin@estates.com"
                         });
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.GeneralIssueModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateRaised")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsResolved")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ResolutionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ResolutionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("GeneralIssues");
                 });
 
             modelBuilder.Entity("Assignment2Project.Models.InstitutionModel", b =>
@@ -150,6 +224,109 @@ namespace Assignment2Project.Migrations
                             Name = "Default",
                             TelephoneNum = ""
                         });
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.MaintenanceIssueModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AssetId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsResolved")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ResolutionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("TimeRaised")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.HasIndex("ResolutionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MaintenanceIssues");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.ResolutionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateResolved")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ResolutionModel");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.RoomCategoryModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RoomCategories");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.RoomModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("InstitutionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("InstitutionId");
+
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -336,6 +513,25 @@ namespace Assignment2Project.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Assignment2Project.Models.AssetModel", b =>
+                {
+                    b.HasOne("Assignment2Project.Areas.Admin.Models.AssetCategoryModel", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Assignment2Project.Models.RoomModel", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Room");
+                });
+
             modelBuilder.Entity("Assignment2Project.Models.CustomUserModel", b =>
                 {
                     b.HasOne("Assignment2Project.Models.InstitutionModel", "Institution")
@@ -343,6 +539,82 @@ namespace Assignment2Project.Migrations
                         .HasForeignKey("InstitutionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Institution");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.GeneralIssueModel", b =>
+                {
+                    b.HasOne("Assignment2Project.Models.ResolutionModel", "Resolution")
+                        .WithMany()
+                        .HasForeignKey("ResolutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Assignment2Project.Models.CustomUserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Resolution");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.MaintenanceIssueModel", b =>
+                {
+                    b.HasOne("Assignment2Project.Models.AssetModel", "Asset")
+                        .WithMany()
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Assignment2Project.Models.ResolutionModel", "Resolution")
+                        .WithMany()
+                        .HasForeignKey("ResolutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Assignment2Project.Models.CustomUserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Asset");
+
+                    b.Navigation("Resolution");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.ResolutionModel", b =>
+                {
+                    b.HasOne("Assignment2Project.Models.CustomUserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.RoomModel", b =>
+                {
+                    b.HasOne("Assignment2Project.Models.RoomCategoryModel", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Assignment2Project.Models.InstitutionModel", "Institution")
+                        .WithMany()
+                        .HasForeignKey("InstitutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
 
                     b.Navigation("Institution");
                 });

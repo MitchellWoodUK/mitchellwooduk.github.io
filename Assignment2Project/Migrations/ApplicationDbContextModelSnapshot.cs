@@ -30,7 +30,7 @@ namespace Assignment2Project.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AssetCategoryModel");
+                    b.ToTable("AssetCategories");
                 });
 
             modelBuilder.Entity("Assignment2Project.Models.AssetModel", b =>
@@ -148,9 +148,9 @@ namespace Assignment2Project.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ESTATES.COM",
                             NormalizedUserName = "ADMIN@ESTATES.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEG3+Q0PjUTQTnzh2QpBgVU+d4VtHfsDXDr7frdzQNCq2S/n2svCDf7eV7q/uZ6Ac3g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEd7pt/kCzGu3r6l/bRQ90+HVljAVgvkqqf2qhuBEI4jJxBbW5UT2RC0kFrmUnoA6g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3333db26-bdb6-4fa8-8e18-43ce63e56807",
+                            SecurityStamp = "153aef4c-99f2-4426-8a2d-011e28597a12",
                             Sname = "Admin",
                             TwoFactorEnabled = false,
                             UserName = "admin@estates.com"
@@ -170,6 +170,9 @@ namespace Assignment2Project.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("InstitutionId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsResolved")
                         .HasColumnType("INTEGER");
 
@@ -181,6 +184,8 @@ namespace Assignment2Project.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InstitutionId");
 
                     b.HasIndex("ResolutionId");
 
@@ -237,6 +242,9 @@ namespace Assignment2Project.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("InstitutionId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsResolved")
                         .HasColumnType("INTEGER");
 
@@ -253,6 +261,8 @@ namespace Assignment2Project.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AssetId");
+
+                    b.HasIndex("InstitutionId");
 
                     b.HasIndex("ResolutionId");
 
@@ -543,6 +553,12 @@ namespace Assignment2Project.Migrations
 
             modelBuilder.Entity("Assignment2Project.Models.GeneralIssueModel", b =>
                 {
+                    b.HasOne("Assignment2Project.Models.InstitutionModel", "Institution")
+                        .WithMany()
+                        .HasForeignKey("InstitutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Assignment2Project.Models.ResolutionModel", "Resolution")
                         .WithMany()
                         .HasForeignKey("ResolutionId")
@@ -555,6 +571,8 @@ namespace Assignment2Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Institution");
+
                     b.Navigation("Resolution");
 
                     b.Navigation("User");
@@ -565,6 +583,12 @@ namespace Assignment2Project.Migrations
                     b.HasOne("Assignment2Project.Models.AssetModel", "Asset")
                         .WithMany()
                         .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Assignment2Project.Models.InstitutionModel", "Institution")
+                        .WithMany()
+                        .HasForeignKey("InstitutionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -581,6 +605,8 @@ namespace Assignment2Project.Migrations
                         .IsRequired();
 
                     b.Navigation("Asset");
+
+                    b.Navigation("Institution");
 
                     b.Navigation("Resolution");
 

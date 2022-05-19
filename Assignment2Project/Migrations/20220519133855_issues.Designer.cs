@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assignment2Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220517143722_assets")]
-    partial class assets
+    [Migration("20220519133855_issues")]
+    partial class issues
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,7 +32,7 @@ namespace Assignment2Project.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AssetCategoryModel");
+                    b.ToTable("AssetCategories");
                 });
 
             modelBuilder.Entity("Assignment2Project.Models.AssetModel", b =>
@@ -150,13 +150,50 @@ namespace Assignment2Project.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ESTATES.COM",
                             NormalizedUserName = "ADMIN@ESTATES.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECnW3OnNsKwlS1RMtgLNCREFBsogMLunmMbQO1lsQrxJJ4oQYOwWitxHbxctkNfIBw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEd7pt/kCzGu3r6l/bRQ90+HVljAVgvkqqf2qhuBEI4jJxBbW5UT2RC0kFrmUnoA6g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "03a6a04d-5612-4611-a6db-1feca13f13a7",
+                            SecurityStamp = "153aef4c-99f2-4426-8a2d-011e28597a12",
                             Sname = "Admin",
                             TwoFactorEnabled = false,
                             UserName = "admin@estates.com"
                         });
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.GeneralIssueModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateRaised")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("InstitutionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsResolved")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ResolutionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InstitutionId");
+
+                    b.HasIndex("ResolutionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("GeneralIssues");
                 });
 
             modelBuilder.Entity("Assignment2Project.Models.InstitutionModel", b =>
@@ -192,6 +229,72 @@ namespace Assignment2Project.Migrations
                             Name = "Default",
                             TelephoneNum = ""
                         });
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.MaintenanceIssueModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AssetId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("InstitutionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsResolved")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ResolutionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("TimeRaised")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.HasIndex("InstitutionId");
+
+                    b.HasIndex("ResolutionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MaintenanceIssues");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.ResolutionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateResolved")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ResolutionModel");
                 });
 
             modelBuilder.Entity("Assignment2Project.Models.RoomCategoryModel", b =>
@@ -448,6 +551,79 @@ namespace Assignment2Project.Migrations
                         .IsRequired();
 
                     b.Navigation("Institution");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.GeneralIssueModel", b =>
+                {
+                    b.HasOne("Assignment2Project.Models.InstitutionModel", "Institution")
+                        .WithMany()
+                        .HasForeignKey("InstitutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Assignment2Project.Models.ResolutionModel", "Resolution")
+                        .WithMany()
+                        .HasForeignKey("ResolutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Assignment2Project.Models.CustomUserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Institution");
+
+                    b.Navigation("Resolution");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.MaintenanceIssueModel", b =>
+                {
+                    b.HasOne("Assignment2Project.Models.AssetModel", "Asset")
+                        .WithMany()
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Assignment2Project.Models.InstitutionModel", "Institution")
+                        .WithMany()
+                        .HasForeignKey("InstitutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Assignment2Project.Models.ResolutionModel", "Resolution")
+                        .WithMany()
+                        .HasForeignKey("ResolutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Assignment2Project.Models.CustomUserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Asset");
+
+                    b.Navigation("Institution");
+
+                    b.Navigation("Resolution");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.ResolutionModel", b =>
+                {
+                    b.HasOne("Assignment2Project.Models.CustomUserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Assignment2Project.Models.RoomModel", b =>

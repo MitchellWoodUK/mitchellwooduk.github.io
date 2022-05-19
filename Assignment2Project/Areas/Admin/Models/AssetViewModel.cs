@@ -9,10 +9,10 @@ namespace Assignment2Project.Areas.Admin.Models
         public AssetModel Asset { get; set; }
         public IEnumerable<SelectListItem> CategoryList { get; set; }
         [Display(Name = "Room")]
-        public string SelectedRoom { get; set; }
+        public int SelectedRoom { get; set; }
         public IEnumerable<SelectListItem> RoomList { get; set; }
         [Display(Name = "Institution")]
-        public string SelectedInstitution { get; set; }
+        public int SelectedInstitution { get; set; }
         public IEnumerable<SelectListItem> InstitutionList  { get; set; }
     }
 }

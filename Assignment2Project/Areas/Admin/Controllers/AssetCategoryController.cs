@@ -53,12 +53,12 @@ namespace Assignment2Project.Areas.Admin.Controllers
         // GET: Admin/AssetCategory/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.AssetCategoryModel == null)
+            if (id == null || _context.AssetCategories == null)
             {
                 return NotFound();
             }
 
-            var assetCategoryModel = await _context.AssetCategoryModel.FindAsync(id);
+            var assetCategoryModel = await _context.AssetCategories.FindAsync(id);
             if (assetCategoryModel == null)
             {
                 return NotFound();
@@ -104,12 +104,12 @@ namespace Assignment2Project.Areas.Admin.Controllers
         // GET: Admin/AssetCategory/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.AssetCategoryModel == null)
+            if (id == null || _context.AssetCategories == null)
             {
                 return NotFound();
             }
 
-            var assetCategoryModel = await _context.AssetCategoryModel
+            var assetCategoryModel = await _context.AssetCategories
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (assetCategoryModel == null)
             {
@@ -124,14 +124,14 @@ namespace Assignment2Project.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.AssetCategoryModel == null)
+            if (_context.AssetCategories == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.AssetCategoryModel'  is null.");
             }
-            var assetCategoryModel = await _context.AssetCategoryModel.FindAsync(id);
+            var assetCategoryModel = await _context.AssetCategories.FindAsync(id);
             if (assetCategoryModel != null)
             {
-                _context.AssetCategoryModel.Remove(assetCategoryModel);
+                _context.AssetCategories.Remove(assetCategoryModel);
             }
             
             await _context.SaveChangesAsync();
@@ -140,7 +140,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
 
         private bool AssetCategoryModelExists(int id)
         {
-          return (_context.AssetCategoryModel?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.AssetCategories?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

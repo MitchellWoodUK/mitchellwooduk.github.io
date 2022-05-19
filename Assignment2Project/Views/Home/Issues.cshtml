@@ -1,0 +1,12 @@
+﻿@model Assignment2Project.Models.IssueViewModel
+@{
+    ViewData["Title"] = "Issues Page";
+}
+
+
+
+<h2 class="header-text">Open Issues for @Model.Institution.Name</h2>
+<div class="my-5">
+    <a asp-controller="MaintenanceIssue" asp-action="CreateIssue" class="btn btn-info me-3">Submit a Maintenance Issue</a>
+    <a asp-controller="GeneralIssue" asp-action="CreateIssue" class="btn btn-info">Submit a General Issue</a>
+</div>

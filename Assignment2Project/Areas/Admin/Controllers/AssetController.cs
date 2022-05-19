@@ -66,6 +66,87 @@ namespace Assignment2Project.Areas.Admin.Controllers
             return null;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Create(AssetViewModel model)
+        {
+            if (model != null)
+            {
+                AssetModel assetModel = new AssetModel();
+                assetModel.Name = model.Asset.Name;
+                assetModel.RoomId = model.SelectedRoom;
+                assetModel.CategoryId = model.Asset.CategoryId;
+
+                await _db.Assets.AddAsync(assetModel);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var assetModel = await _db.Assets.FindAsync(id);
+            if (assetModel == null)
+            {
+                return NotFound();
+            }
+            AssetViewModel assetViewModel = new AssetViewModel()
+            {
+                Asset = assetModel,
+                InstitutionList = _db.Institutions.Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                }),
+                RoomList = _db.Rooms.Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                }),
+                CategoryList = _db.AssetCategories.Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                })
+            };
+
+            return View(assetViewModel);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(AssetViewModel model)
+        {
+            if (model != null)
+            {
+                AssetModel assetModel = new AssetModel();
+                assetModel.Name = model.Asset.Name;
+                assetModel.RoomId = model.SelectedRoom;
+                assetModel.CategoryId = model.Asset.CategoryId;
+
+                _db.Assets.Update(assetModel);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var asset = await _db.Assets.FindAsync(id);
+            if (asset == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            _db.Remove(asset);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
 
     }
