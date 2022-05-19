@@ -13,6 +13,8 @@ namespace Assignment2Project.Data
         public DbSet<RoomCategoryModel> RoomCategories { get; set;}
         public DbSet<AssetModel> Assets { get; set; }
         public DbSet<AssetCategoryModel> AssetCategories { get; set; }
+        public DbSet<MaintenanceIssueModel> MaintenanceIssues { get; set;}
+        public DbSet<GeneralIssueModel> GeneralIssues { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

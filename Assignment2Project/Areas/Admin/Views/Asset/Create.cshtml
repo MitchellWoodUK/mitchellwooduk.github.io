@@ -11,12 +11,12 @@
         <h1 class="mb-3">Create a New Asset</h1>
         <hr />
         <div class="my-3">
-            @Html.DropDownListFor(m => m.SelectedInstitution, Model.InstitutionList, "Select an institution", new {@class = "form-select", id="insitution"})
+            @Html.DropDownListFor(m => m.SelectedInstitution, Model.InstitutionList, "Select an institution", new {@class = "form-select", id="Institution"})
             <span asp-validation-for="SelectedInstitution" class="text-danger"></span>
         </div>
         <div class="my-3">
-            @Html.DropDownListFor(m => m.Asset.RoomId, Model.RoomList, "Select a room", new {@class = "form-select"})
-            <span asp-validation-for="Asset.RoomId" class="text-danger"></span>
+            @Html.DropDownListFor(m => m.SelectedRoom, Model.RoomList, "Select a room", new {@class = "form-select", id="Room"})
+            <span asp-validation-for="SelectedRoom" class="text-danger"></span>
         </div>
         <div class="my-3">
             @Html.DropDownListFor(m => m.Asset.CategoryId, Model.CategoryList, "Select a category", new {@class = "form-select"})
@@ -38,11 +38,37 @@
 
 @section Scripts {
     
-    <script type="texttext/javascript">
+    <script type="text/javascript">
         $('#Institution').change(function () {
+            //Gets value stored in the institution dropdown.
             var selectedInstitution = $("#Institution").val();
-            var roomsSelect = $("Room");
+            //Empties the room dropdown
+            var roomsSelect = $("#Room");
+            console.log(roomsSelect);
             roomsSelect.empty();
+            console.log(roomsSelect);
+            //If the institution is not null.
+            if (selectedInstitution != null && selectedInstitution != '') {
+                //Calls controller action, passes the selected institution, stores the results in vairable rooms.
+                $.getJSON('@Url.Action("GetRooms")', { selectedInstitution }, function (rooms){
+                    //if rooms is not empty
+                    if (rooms != null && !jQuery.isEmptyObject(rooms)){
+                        //creates a blank element for the list.
+                        roomsSelect.append($('<option/>',{
+                            value: null,
+                            text: ""
+                        }));
+                        //iterates through the collection of rooms and adds each element to the dropdown.
+                        
+                        $.each(rooms, function(index, room){
+                            roomsSelect.append($('<option/>', {
+                                value: room.value,
+                                text: room.text
+                            }));
+                        })
+                    }
+                })
+            }
         })
     </script>
 }
