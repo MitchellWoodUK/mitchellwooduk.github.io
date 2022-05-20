@@ -3,6 +3,7 @@ using System;
 using Assignment2Project.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assignment2Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220520115042_issue")]
+    partial class issue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
@@ -148,9 +150,9 @@ namespace Assignment2Project.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ESTATES.COM",
                             NormalizedUserName = "ADMIN@ESTATES.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEL6yIddmWjVqygfT4eFNvCPYyEyiwcM81UtOrSp6fcKcw674fWAe2oi3a4Uu8MZOEA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPwl/BcIbycR1ByLwEIkvo4qmBYZlYV8V9hSGjZ9pxdEVwmlPIFOW0Q4dPTJQO7ATg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "34625a5c-7a0f-49bf-b389-a1e529fc4fe5",
+                            SecurityStamp = "e30f05b2-419c-4ee2-aa8d-1e50286d84a9",
                             Sname = "Admin",
                             TwoFactorEnabled = false,
                             UserName = "admin@estates.com"
@@ -176,6 +178,9 @@ namespace Assignment2Project.Migrations
                     b.Property<bool>("IsResolved")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ResolutionId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -183,6 +188,8 @@ namespace Assignment2Project.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("InstitutionId");
+
+                    b.HasIndex("ResolutionId");
 
                     b.HasIndex("UserId");
 
@@ -243,6 +250,9 @@ namespace Assignment2Project.Migrations
                     b.Property<bool>("IsResolved")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ResolutionId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("TimeRaised")
                         .HasColumnType("TEXT");
 
@@ -256,9 +266,35 @@ namespace Assignment2Project.Migrations
 
                     b.HasIndex("InstitutionId");
 
+                    b.HasIndex("ResolutionId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("MaintenanceIssues");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.ResolutionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateResolved")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ResolutionModel");
                 });
 
             modelBuilder.Entity("Assignment2Project.Models.RoomCategoryModel", b =>
@@ -525,6 +561,12 @@ namespace Assignment2Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Assignment2Project.Models.ResolutionModel", "Resolution")
+                        .WithMany()
+                        .HasForeignKey("ResolutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Assignment2Project.Models.CustomUserModel", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -532,6 +574,8 @@ namespace Assignment2Project.Migrations
                         .IsRequired();
 
                     b.Navigation("Institution");
+
+                    b.Navigation("Resolution");
 
                     b.Navigation("User");
                 });
@@ -550,6 +594,12 @@ namespace Assignment2Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Assignment2Project.Models.ResolutionModel", "Resolution")
+                        .WithMany()
+                        .HasForeignKey("ResolutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Assignment2Project.Models.CustomUserModel", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -559,6 +609,19 @@ namespace Assignment2Project.Migrations
                     b.Navigation("Asset");
 
                     b.Navigation("Institution");
+
+                    b.Navigation("Resolution");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Assignment2Project.Models.ResolutionModel", b =>
+                {
+                    b.HasOne("Assignment2Project.Models.CustomUserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

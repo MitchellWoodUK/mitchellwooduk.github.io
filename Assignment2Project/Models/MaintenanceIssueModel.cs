@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,7 +10,6 @@ namespace Assignment2Project.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
         public DateTime TimeRaised { get; set; }
 
         [Required]
@@ -29,9 +29,6 @@ namespace Assignment2Project.Models
         [Required]
         public bool IsResolved { get; set; }
 
-        public int ResolutionId { get; set; }
-        [ForeignKey("ResolutionId")]
-        public ResolutionModel Resolution { get; set; }
         public int InstitutionId { get; set; }
         [ForeignKey("InstitutionId")]
         public InstitutionModel Institution { get; set; }

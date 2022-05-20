@@ -1,0 +1,24 @@
+﻿@model MaintenanceViewModel
+@{
+    ViewData["Title"] = "Create Issue";
+}
+
+<h2 class="my-3">Add a Maintenance Issue for Review</h2>
+
+<div>
+    <form method="post" asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <h1 class="mb-3">Create a New Issue</h1>
+        <div class="my-3">
+            @Html.DropDownListFor(m => m.MaintenanceIssue.AssetId, Model.AssetList, "Select the Asset that has the Issue", new {@class = "form-select"})
+            <span asp-validation-for="MaintenanceIssue.AssetId" class="text-danger"></span>
+        </div>
+        <div class="my-3">
+            <input asp-for="MaintenanceIssue.Details" class="form-control form-control" type="text" placeholder="Name">
+            <span asp-validation-for="MaintenanceIssue.Details" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success w-100">Create</button>
+        </div>
+    </form>
+</div>
