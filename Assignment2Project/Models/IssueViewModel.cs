@@ -6,7 +6,9 @@ namespace Assignment2Project.Models
     {
         [Display(Name = "Institution")]
         public InstitutionModel Institution { get; set; }
-        public List<MaintenanceIssueModel> MaintenanceIssues { get; set;}
+        public RoomModel Room { get; set; }
+        public AssetModel Asset { get; set; }
+        public List<MaintenanceIssueModel> MaintenanceIssues { get; set; }
         public List<GeneralIssueModel> GeneralIssues { get; set; }
 
     }

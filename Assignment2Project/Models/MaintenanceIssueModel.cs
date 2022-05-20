@@ -22,6 +22,11 @@ namespace Assignment2Project.Models
         public string Details { get; set; }
 
         [Required]
+        public int RoomId { get; set; }
+        [ForeignKey("RoomId")]
+        public RoomModel Room { get; set; }
+
+        [Required]
         public int AssetId { get; set; }
         [ForeignKey("AssetId")]
         public AssetModel Asset { get; set; }

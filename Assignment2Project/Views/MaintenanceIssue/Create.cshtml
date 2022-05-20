@@ -3,22 +3,72 @@
     ViewData["Title"] = "Create Issue";
 }
 
-<h2 class="my-3">Add a Maintenance Issue for Review</h2>
+<h2 class="mt-5 mb-3 header-text">Add a Maintenance Issue for Review</h2>
 
 <div>
-    <form method="post" asp-action="Create">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <h1 class="mb-3">Create a New Issue</h1>
-        <div class="my-3">
-            @Html.DropDownListFor(m => m.MaintenanceIssue.AssetId, Model.AssetList, "Select the Asset that has the Issue", new {@class = "form-select"})
-            <span asp-validation-for="MaintenanceIssue.AssetId" class="text-danger"></span>
+    <div class="card shadow card-bg p-3">
+        <div class="card-body">
+            <form method="post" asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <h3 class="mb-3 card-text">Create a New Issue</h3>
+                <div class="my-3">
+                    @Html.DropDownListFor(m => m.SelectedRoom, Model.RoomList, "Select the Room that the Issue Concerns", new {@class = "form-select", id="Room"})
+                    <span asp-validation-for="MaintenanceIssue.RoomId" class="text-danger"></span>
+                </div>
+                <div class="my-3">
+                    @Html.DropDownListFor(m => m.SelectedAsset, Model.AssetList, "Select the Asset that has the Issue", new {@class = "form-select", id="Asset"})
+                    <span asp-validation-for="MaintenanceIssue.AssetId" class="text-danger"></span>
+                </div>
+                <div class="my-3">
+                    <p class="mt-5 fs-5 card-text">Please Explain the Issue in as much Depth as Possible:</p>
+                    <input asp-for="MaintenanceIssue.Details" class="form-control" type="text" placeholder="Details of Issue">
+                    <span asp-validation-for="MaintenanceIssue.Details" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-info w-100 mt-3">Create</button>
+                </div>
+            </form>
         </div>
-        <div class="my-3">
-            <input asp-for="MaintenanceIssue.Details" class="form-control form-control" type="text" placeholder="Name">
-            <span asp-validation-for="MaintenanceIssue.Details" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-success w-100">Create</button>
-        </div>
-    </form>
+
+    </div>
+    <a asp-controller="Home" asp-action="Issues" class="btn btn-primary mt-5">Back to Issues</a>
+
 </div>
+
+
+
+@section Scripts {
+
+<script type="text/javascript">
+    $('#Room').change(function () {
+        //Gets value stored in the room dropdown.
+        var selectedRoom = $("#Room").val();
+        //Empties the asset dropdown
+        var assetsSelect = $("#Asset");
+        assetsSelect.empty();
+        //If the room is not null.
+        if (selectedRoom != null && selectedRoom != '') {
+            //Calls controller action, passes the selected room, stores the results in vairable assets.
+            $.getJSON('@Url.Action("GetAssets")', { selectedRoom }, function (assets){
+                //if rooms is not empty
+                if (assets != null && !jQuery.isEmptyObject(assets)){
+                    //creates a blank element for the list.
+                    assetsSelect.append($('<option/>',{
+                        value: null,
+                        text: ""
+                    }));
+                    //iterates through the collection of assets and adds each element to the dropdown.
+
+                    $.each(assets, function(index, asset){
+                        assetsSelect.append($('<option/>', {
+                            value: asset.value,
+                            text: asset.text
+                        }));
+                    })
+                }
+            })
+        }
+    })
+</script>
+}

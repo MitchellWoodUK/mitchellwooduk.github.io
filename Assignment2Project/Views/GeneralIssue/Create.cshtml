@@ -3,19 +3,25 @@
     ViewData["Title"] = "Create Issue";
 }
 
-<h2 class="my-3">Add a General Issue for Review</h2>
+<h2 class="mt-5 mb-3 header-text">Add a General Issue for Review</h2>
 
 <div>
-    <form method="post" asp-action="Create">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <h1 class="mb-3">Create a New Issue</h1>
-        <div class="my-3">
-            <h3 >Please Explain the Issue in as much Depth as Possible:</h3>
-            <input asp-for="Details" class="form-control form-control" type="text" placeholder="Name">
-            <span asp-validation-for="Details" class="text-danger"></span>
+    <div class="card shadow card-bg p-3">
+        <div class="card-body">
+            <form method="post" asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <h1 class="mb-3 card-text">Create a New Issue</h1>
+                <div class="my-3">
+                    <p class="mt-5 fs-5 card-text">Please Explain the Issue in as much Depth as Possible:</p>
+                    <input asp-for="Details" class="form-control form-control" type="text" placeholder="Name">
+                    <span asp-validation-for="Details" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-info w-100 mt-3">Create</button>
+                </div>
+            </form>
         </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-success w-100">Create</button>
-        </div>
-    </form>
+    </div>
+    <a asp-controller="Home" asp-action="Issues" class="btn btn-primary mt-5">Back to Issues</a>
+
 </div>

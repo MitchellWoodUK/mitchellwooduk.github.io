@@ -31,6 +31,12 @@ namespace Assignment2Project.Controllers
             MaintenanceViewModel maintenanceVM = new MaintenanceViewModel()
             {
                 MaintenanceIssue = new MaintenanceIssueModel(),
+                
+                RoomList = _db.Rooms.Where(n => n.InstitutionId == loggedIn.InstitutionId).Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                }),
                 AssetList = _db.Assets.Where(n => n.Room.InstitutionId == loggedIn.InstitutionId).Select(c => new SelectListItem
                 {
                     Text = c.Name,
@@ -46,14 +52,14 @@ namespace Assignment2Project.Controllers
         {
             //Returns the data needed to create a maintenance issue from the create view.
             var loggedIn = await _userManager.GetUserAsync(User);
-
             if (model != null)
             {
                 MaintenanceIssueModel issueModel = new MaintenanceIssueModel();
                 issueModel.TimeRaised = DateTime.Now;
                 issueModel.UserId = loggedIn.Id;
                 issueModel.Details = model.MaintenanceIssue.Details;
-                issueModel.AssetId = model.MaintenanceIssue.AssetId;
+                issueModel.AssetId = model.SelectedAsset;
+                issueModel.RoomId = model.SelectedRoom;
                 issueModel.IsResolved = false;
                 issueModel.InstitutionId = loggedIn.InstitutionId;
                 await _db.MaintenanceIssues.AddAsync(issueModel);
@@ -62,6 +68,25 @@ namespace Assignment2Project.Controllers
                 return RedirectToAction( "Issues", "Home");
             }
             return RedirectToAction("Issues", "Home");
+        }
+
+
+        [HttpGet]
+        public IEnumerable<SelectListItem> GetAssets(int selectedRoom)
+        {
+            if (selectedRoom != null)
+            {
+                var AssetList = _db.Assets
+                    .Where(n => n.Room.Id == selectedRoom)
+                    .Select(n =>
+                        new SelectListItem
+                        {
+                            Value = n.Id.ToString(),
+                            Text = n.Name
+                        }).ToList();
+                return new SelectList(AssetList, "Value", "Text");
+            }
+            return null;
         }
     }
 }

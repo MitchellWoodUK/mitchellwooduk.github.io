@@ -1,12 +1,56 @@
-﻿@model Assignment2Project.Models.IssueViewModel
+﻿@model IEnumerable<IssueViewModel>
 @{
     ViewData["Title"] = "Issues Page";
 }
 
 
 
-<h2 class="header-text">Open Issues for @Model.Institution.Name</h2>
+<h2 class="header-text mt-5 mb-3">Open Issues for</h2>
 <div class="my-5">
     <a asp-controller="MaintenanceIssue" asp-action="Create" class="btn btn-info me-3">Submit a Maintenance Issue</a>
     <a asp-controller="GeneralIssue" asp-action="Create" class="btn btn-info">Submit a General Issue</a>
 </div>
+
+
+        
+<div class="col">
+    <div class="card shadow card-bg p-2">
+        <div class="card-body">
+            <h3 class="mb-3 card-text">Open Maintenance Issues:</h3>
+                        
+            <table class="table">
+                <thead>
+                    <tr>
+                        
+                        <th>Room</th>
+                        <th>Assets</th>
+                        <th>Details</th>
+                        <th>Time Raised</th>
+                        <th>Resolved?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        @foreach (var issue in Model)
+            {
+                <tr>
+                <td>@issue.Room.Name</td>
+                   </tr>
+                
+
+            }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="col">
+    <div class="card shadow card-bg p-2">
+        <div class="card-body">
+            <h3 class="mb-3 card-text">Open General Issues:</h3>
+        </div>
+    </div>
+</div>
+        
+    

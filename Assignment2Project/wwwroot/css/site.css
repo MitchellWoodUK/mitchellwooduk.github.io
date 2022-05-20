@@ -24,3 +24,9 @@ body {
     font-family: 'Montserrat';
     font-weight: 600;
 }
+.card-bg {
+    background-color: #2C3E50;
+}
+.card-text{
+    color: white;
+}
