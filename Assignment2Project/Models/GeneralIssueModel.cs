@@ -26,5 +26,6 @@ namespace Assignment2Project.Models
         public int InstitutionId { get; set; }
         [ForeignKey("InstitutionId")]
         public InstitutionModel Institution { get; set; }
+        public List<GeneralCommentModel> GeneralComments { get; set; } = new List<GeneralCommentModel>();
     }
 }

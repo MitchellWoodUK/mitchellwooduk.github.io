@@ -15,6 +15,8 @@ namespace Assignment2Project.Data
         public DbSet<AssetCategoryModel> AssetCategories { get; set; }
         public DbSet<MaintenanceIssueModel> MaintenanceIssues { get; set;}
         public DbSet<GeneralIssueModel> GeneralIssues { get; set; }
+        public DbSet<MaintenanceCommentModel> MaintenanceComments { get; set;}
+        public DbSet<GeneralCommentModel> GeneralComments { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

@@ -65,9 +65,9 @@ namespace Assignment2Project.Controllers
                 await _db.MaintenanceIssues.AddAsync(issueModel);
                 await _db.SaveChangesAsync();
                 //Redirects to the Issues action in the Home controller.
-                return RedirectToAction( "Issues", "Home");
+                return RedirectToAction( "Index", "Home");
             }
-            return RedirectToAction("Issues", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
 
@@ -87,6 +87,21 @@ namespace Assignment2Project.Controllers
                 return new SelectList(AssetList, "Value", "Text");
             }
             return null;
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("MaintenanceIssues", "Home");
+            }
+            var issue = await _db.MaintenanceIssues.Where(x => x.Id == id).FirstOrDefaultAsync();
+            issue.MaintenanceComments = await _db.MaintenanceComments.Where(x => x.MaintenanceIssueId == issue.Id).Include("User").OrderByDescending(x => x.TimeStamp).ToListAsync();
+            if (issue == null)
+            {
+                return RedirectToAction("MaintenanceIssues", "Home");
+            }
+            return View(issue);
         }
     }
 }

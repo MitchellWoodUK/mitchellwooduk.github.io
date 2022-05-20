@@ -1,0 +1,34 @@
+﻿@model IEnumerable<GeneralIssueModel>
+@{
+    ViewData["Title"] = "Issues Page";
+}
+
+<div class="col">
+    <div class="card shadow card-bg p-2">
+        <div class="card-body">
+            <h3 class="mb-3 card-text">Open General Issues:</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="card-text">Time Raised</th>
+                        <th class="card-text">Resolved?</th>
+                        <th class="card-text">Manage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var issue in Model)
+                    {
+                        <tr>
+                            <td class="card-text">@issue.DateRaised</td>
+                            <td class="card-text">@(issue.IsResolved ? "Yes" : "No")</td>
+                            <td>
+                                <a asp-controller="GeneralIssue" asp-action="Details" asp-route-id="@issue.Id" class="btn btn-info">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

@@ -45,9 +45,9 @@ namespace Assignment2Project.Controllers
                 await _db.GeneralIssues.AddAsync(issueModel);
                 await _db.SaveChangesAsync();
                 //Redirects to the Issues action in the Home controller.
-                return RedirectToAction("Issues", "Home");
+                return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("Issues", "Home");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

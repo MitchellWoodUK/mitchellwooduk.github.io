@@ -25,74 +25,57 @@ namespace Assignment2Project.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Issues()
+        public async Task<IActionResult> MaintenanceIssues()
         {
             //Creates a new issueViewModel, finds the logged in user and uses the users institution to find that institutions maintenance issues and general issues.
             var loggedIn = await _userManager.GetUserAsync(User);
             var institution = await _db.Institutions.Where(x => x.Id == loggedIn.InstitutionId).FirstOrDefaultAsync();
+
             var maintentanceIssues = await _db.MaintenanceIssues.Where(x => x.InstitutionId == loggedIn.InstitutionId).ToListAsync();
-            var generalIssues = await _db.GeneralIssues.Where(x => x.InstitutionId == loggedIn.InstitutionId).ToListAsync();
+
+            //Creates a list to populate with IssueViewModels
             var VMlist = new List<IssueViewModel>();
-            foreach (var issue in maintentanceIssues)
+            //Loops through both the list of maintenance issues and general 
+            foreach (var mIssue in maintentanceIssues)
             {
-                var room = _db.Rooms.FirstOrDefault(i => i.Id == issue.RoomId);
-                if (room != null)
+                var room = _db.Rooms.FirstOrDefault(i => i.Id == mIssue.RoomId);
+                var asset = _db.Assets.FirstOrDefault(i => i.Id == mIssue.AssetId);
+                var maintenance = _db.MaintenanceIssues.FirstOrDefault(i => i.Id == mIssue.Id);
+                if (room != null && asset != null && maintenance != null)
                 {
                     IssueViewModel issueVM = new IssueViewModel()
                     {
-                        Institution = institution,
-                        MaintenanceIssues = maintentanceIssues,
-                        GeneralIssues = generalIssues,
-                        Room = room
+                        MaintenanceIssues = maintenance,
+                        Room = room,
+                        Asset = asset
                     };
                     VMlist.Add(issueVM);
                 }
-                
             }
             return View(VMlist);
+        }
 
-
-
-
-
-            /*
-                var users = await _userManager.Users.ToListAsync();
-            var VMlist = new List<UserRolesViewModel>();
-
-            foreach (var user in users)
+        public async Task<IActionResult> GeneralIssues()
+        {
+            //Creates a new issueViewModel, finds the logged in user and uses the users institution to find that institutions maintenance issues and general issues.
+            var loggedIn = await _userManager.GetUserAsync(User);
+            var institution = await _db.Institutions.Where(x => x.Id == loggedIn.InstitutionId).FirstOrDefaultAsync();
+            var generalIssues = await _db.GeneralIssues.Where(x => x.InstitutionId == loggedIn.InstitutionId).ToListAsync();
+            //Creates a list to populate with GeneralIssues
+            var list = new List<GeneralIssueModel>();
+            //Loops through both the list of maintenance issues and general 
+            foreach (var gIssue in generalIssues)
             {
-                var institution = _db.Institutions.FirstOrDefault(i => i.Id == user.InstitutionId);
-                if (institution != null)
+                var general = _db.GeneralIssues.FirstOrDefault(i => i.Id == gIssue.Id);
+                if(general != null)
                 {
-                    var currentVM = new UserRolesViewModel()
-                    {
-                        User = user,
-                        Roles = new List<string>(await _userManager.GetRolesAsync(user)),
-                        Institution = institution
-                    };
-                    VMlist.Add(currentVM);
+                    list.Add(general);
                 }
-
             }
-            return View(VMlist); 
-              
-             
-             
-             
-             
-              */
+            return View(list);
         }
 
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+ 
     }
 }
