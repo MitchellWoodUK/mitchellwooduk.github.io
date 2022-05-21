@@ -11,6 +11,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th class="card-text">Logged By</th>
                         <th class="card-text">Room</th>
                         <th class="card-text">Assets</th>
                         <th class="card-text">Time Raised</th>
@@ -22,6 +23,7 @@
                     @foreach (var issue in Model)
                     {
                         <tr>
+                            <td class="card-text">@issue.User.UserName</td>
                             <td class="card-text">@issue.Room.Name</td>
                             <td class="card-text">@issue.Asset.Name</td>
                             <td class="card-text">@issue.MaintenanceIssues.TimeRaised</td>

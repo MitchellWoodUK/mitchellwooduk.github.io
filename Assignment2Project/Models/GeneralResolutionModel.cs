@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Assignment2Project.Models
 {
-    public class ResolutionModel
+    public class GeneralResolutionModel
     {
         [Key]
         public int Id { get; set; }
-        public int MaintenanceIssueId { get; set; }
+        public int GeneralIssueId { get; set; }
         [Required]
         public DateTime DateResolved { get; set; }
 

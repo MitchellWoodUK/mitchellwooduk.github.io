@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GeneralIssueModel>
+﻿@model IEnumerable<GeneralIssueViewModel>
 @{
     ViewData["Title"] = "Issues Page";
 }
@@ -10,6 +10,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th class="card-text">Logged By</th>
                         <th class="card-text">Time Raised</th>
                         <th class="card-text">Resolved?</th>
                         <th class="card-text">Manage</th>
@@ -19,10 +20,11 @@
                     @foreach (var issue in Model)
                     {
                         <tr>
-                            <td class="card-text">@issue.DateRaised</td>
-                            <td class="card-text">@(issue.IsResolved ? "Yes" : "No")</td>
+                            <td class="card-text">@issue.User.UserName</td>
+                            <td class="card-text">@issue.GeneralIssue.DateRaised</td>
+                            <td class="card-text">@(issue.GeneralIssue.IsResolved ? "Yes" : "No")</td>
                             <td>
-                                <a asp-controller="GeneralIssue" asp-action="Details" asp-route-id="@issue.Id" class="btn btn-info">Details</a>
+                                <a asp-controller="GeneralIssue" asp-action="Details" asp-route-id="@issue.GeneralIssue.Id" class="btn btn-info">Details</a>
                             </td>
                         </tr>
                     }

@@ -1,12 +1,13 @@
-﻿@model IssueViewModel
+﻿@model GeneralIssueViewModel
 @{
-    ViewData["Title"] = "Maintenance Issue";
+    ViewData["Title"] = "General Issue";
 }
-<a asp-controller="Home" asp-action="MaintenanceIssues" class="btn btn-primary mb-3">Back to Maintenance Issues</a>
 
+<a asp-controller="Home" asp-action="GeneralIssues" class="btn btn-primary mb-3">Back to General Issues</a>
 <div class="row justify-content-center">
+    
     <div class="card card-bg card-header m-3 shadow">
-        <h3 class="header-text card-text m-2">Maintenance Issue:</h3>
+        <h3 class="header-text card-text m-2">General Issue:</h3>
 
         <div class="card-header ">
             <div class="row">
@@ -16,43 +17,35 @@
                 </div>
                 <div class="col-9 mt-3">
                     <h5 class="my-1 card-text fst-italic">@Model.User.UserName</h5>
-                    <h5 class="my-1 card-text fst-italic">@Model.MaintenanceIssues.TimeRaised</h5>
+                    <h5 class="my-1 card-text fst-italic">@Model.GeneralIssue.DateRaised</h5>
                 </div>
             </div>
         </div>
-
-
         <div class="card-body">
             <div class="row">
                 <div class="col-3">
-                    <h5 class="my-1 card-text">Room:   </h5>
-                    <h5 class="my-1 card-text">Asset:  </h5>
                     <h5 class="my-5 card-text">Details of Issue:</h5>
 
                 </div>
                 <div class="col-9">
-                    <h5 class="my-1 card-text fst-italic">@Model.Room.Name</h5>
-                    <h5 class="my-1 card-text fst-italic">@Model.Asset.Name</h5>
-                    <h5 class="my-5 card-text fst-italic">@Model.MaintenanceIssues.Details</h5>
+                    <h5 class="my-5 card-text fst-italic">@Model.GeneralIssue.Details</h5>
                 </div>
             </div>
-
-
         </div>
         <div class="card-footer">
             <div class="row">
                 <div class="col-3">
                     <h5 class="my-1 card-text">Resolved:</h5>
-                    <a asp-action="Resolution" asp-route-id="@Model.MaintenanceIssues.Id" class="btn btn-info mt-3">View Resolution Details</a>
+                    <a asp-action="Resolution" asp-route-id="@Model.GeneralIssue.Id" class="btn btn-info mt-3">View Resolution Details</a>
                 </div>
                 <div class="col-9">
-                    <h5 class="my-1 card-text fst-italic">@(Model.MaintenanceIssues.IsResolved ? "Resolved" : "Open")</h5>
+                    <h5 class="my-1 card-text fst-italic">@(Model.GeneralIssue.IsResolved ? "Resolved" : "Open")</h5>
                 </div>
             </div>
             <div class="row mt-5">
                 <div class="col">
                     <form asp-action="AddComment" method="post">
-                        <input type="hidden" value="@Model.MaintenanceIssues.Id" name="id" />
+                        <input type="hidden" value="@Model.GeneralIssue.Id" name="id" />
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" placeholder="Enter Comment..." name="comment" />
                             <button type="submit" class="btn btn-success">Add Comment</button>
@@ -64,7 +57,7 @@
         </div>
     </div>
 </div>
-@foreach (var comment in @Model.MaintenanceIssues.MaintenanceComments)
+@foreach (var comment in @Model.GeneralIssue.GeneralComments)
 {
     <div class="alert alert-info" role="alert">
         @comment.Comment

@@ -1,5 +1,4 @@
-﻿using Assignment2Project.Areas.Admin.Models;
-using Assignment2Project.Data;
+﻿using Assignment2Project.Data;
 using Assignment2Project.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -101,7 +100,85 @@ namespace Assignment2Project.Controllers
             {
                 return RedirectToAction("MaintenanceIssues", "Home");
             }
-            return View(issue);
+            var VM = new IssueViewModel();
+
+            //Creates a list to populate with IssueViewModels
+            //Loops through both the list of maintenance issues and general 
+            var user = _db.Users.FirstOrDefault(i => i.Id == issue.UserId);
+                var room = _db.Rooms.FirstOrDefault(i => i.Id == issue.RoomId);
+                var asset = _db.Assets.FirstOrDefault(i => i.Id == issue.AssetId);
+                if (room != null && asset != null)
+                {
+                    IssueViewModel issueVM = new IssueViewModel()
+                    {
+                        User = user,
+                        MaintenanceIssues = issue,
+                        Room = room,
+                        Asset = asset
+                    };
+                VM = issueVM;
+                }
+            
+            return View(VM);
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddComment(string comment, int id)
+        {
+            var issue = await _db.MaintenanceIssues.Where(x => x.Id == id).FirstOrDefaultAsync();
+            issue.MaintenanceComments.Add(new MaintenanceCommentModel
+            {
+                Comment = comment,
+                MaintenanceIssueId = id,
+                TimeStamp = DateTime.Now,
+                User = await _userManager.FindByEmailAsync(User.Identity.Name)
+            });
+            _db.MaintenanceIssues.Update(issue);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { id = issue.Id });
+        }
+
+
+        public async Task<IActionResult> Resolution(int id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("MaintenanceIssues", "Home");
+            }
+            var issue = await _db.MaintenanceIssues.Where(x => x.Id == id).FirstOrDefaultAsync();
+
+            if (issue == null)
+            {
+                return RedirectToAction("MaintenanceIssues", "Home");
+            }
+                ResolutionViewModel resVM = new ResolutionViewModel()
+                {
+                    MaintenanceIssue = issue,
+                    Resolution = new ResolutionModel()
+                };
+                
+            return View(resVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddResolution(string details, int id)
+        {
+            var issue = await _db.MaintenanceIssues.Where(n => n.Id == id).FirstOrDefaultAsync();
+            issue.ResolutionComments.Add(new ResolutionModel
+            {
+                MaintenanceIssueId = id,
+                DateResolved = DateTime.Now,
+                User = await _userManager.FindByEmailAsync(User.Identity.Name),
+                Details = details
+            });
+           
+            issue.IsResolved = true;
+            _db.MaintenanceIssues.Update(issue);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Resolution), new { id = issue.Id });
+        }
+
     }
 }

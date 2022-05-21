@@ -17,6 +17,7 @@ namespace Assignment2Project.Data
         public DbSet<GeneralIssueModel> GeneralIssues { get; set; }
         public DbSet<MaintenanceCommentModel> MaintenanceComments { get; set;}
         public DbSet<GeneralCommentModel> GeneralComments { get; set; }
+        public DbSet<ResolutionModel> Resolutions { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

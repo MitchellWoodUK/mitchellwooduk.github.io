@@ -2,6 +2,7 @@
 using Assignment2Project.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Assignment2Project.Controllers
 {
@@ -48,6 +49,95 @@ namespace Assignment2Project.Controllers
                 return RedirectToAction("Index", "Home");
             }
             return RedirectToAction("Index", "Home");
+        }
+
+
+        public async Task<IActionResult> Details(int id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("GeneralIssues", "Home");
+            }
+            var issue = await _db.GeneralIssues.Where(x => x.Id == id).FirstOrDefaultAsync();
+            issue.GeneralComments = await _db.GeneralComments.Where(x => x.GeneralIssueId == issue.Id).Include("User").OrderByDescending(x => x.TimeStamp).ToListAsync();
+            if (issue == null)
+            {
+                return RedirectToAction("GeneralIssues", "Home");
+            }
+            var VM = new GeneralIssueViewModel();
+
+            //Creates a list to populate with IssueViewModels
+            //Loops through both the list of maintenance issues and general 
+            var user = _db.Users.FirstOrDefault(i => i.Id == issue.UserId);
+            if (user != null)
+            {
+                GeneralIssueViewModel issueVM = new GeneralIssueViewModel()
+                {
+                    User = user,
+                    GeneralIssue = issue
+                };
+                VM = issueVM;
+            }
+
+            return View(VM);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddComment(string comment, int id)
+        {
+            var issue = await _db.GeneralIssues.Where(x => x.Id == id).FirstOrDefaultAsync();
+            issue.GeneralComments.Add(new GeneralCommentModel
+            {
+                Comment = comment,
+                GeneralIssueId = id,
+                TimeStamp = DateTime.Now,
+                User = await _userManager.FindByEmailAsync(User.Identity.Name)
+            });
+            _db.GeneralIssues.Update(issue);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { id = issue.Id });
+        }
+
+
+        public async Task<IActionResult> Resolution(int id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("GeneralIssues", "Home");
+            }
+            var issue = await _db.GeneralIssues.Where(x => x.Id == id).FirstOrDefaultAsync();
+
+            if (issue == null)
+            {
+                return RedirectToAction("GeneralIssues", "Home");
+            }
+            GeneralResolutionViewModel resVM = new GeneralResolutionViewModel()
+            {
+                GeneralIssue = issue,
+                Resolution = new ResolutionModel()
+            };
+
+            return View(resVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddResolution(string details, int id)
+        {
+            var issue = await _db.GeneralIssues.Where(n => n.Id == id).FirstOrDefaultAsync();
+            issue.ResolutionComments.Add(new GeneralResolutionModel
+            {
+                GeneralIssueId = id,
+                DateResolved = DateTime.Now,
+                User = await _userManager.FindByEmailAsync(User.Identity.Name),
+                Details = details
+            });
+
+            issue.IsResolved = true;
+            _db.GeneralIssues.Update(issue);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Resolution), new { id = issue.Id });
         }
     }
 }

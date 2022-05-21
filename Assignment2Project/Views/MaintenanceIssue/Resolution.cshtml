@@ -1,0 +1,36 @@
+﻿@model ResolutionViewModel
+@{
+    ViewData["Title"] = "Resolve Issue";
+}
+<a asp-controller="Home" asp-action="MaintenanceIssues" class="btn btn-primary mb-3">Back to Maintenance Issues</a>
+
+<div class="row justify-content-center">
+    <div class="card card-bg card-header m-3 shadow">
+        <h3 class="header-text card-text m-2">Issue Resolution:</h3>
+        <h5 class="card-text mt-5">Only submit a resolution if the issue is completely fixed.</h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <form asp-action="AddResolution" method="post">
+                        <input type="hidden" value="@Model.MaintenanceIssue.Id" name="id" />
+                        <div class="my-3">
+                            <p class="mt-5 fs-5 card-text">Resolution Details:</p>
+                            <input asp-for="Resolution.Details" class="form-control" type="text" placeholder="Details of Resolution..." name="details">
+                            <span asp-validation-for="Resolution.Details" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-info w-100 mt-3">Resolve</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@foreach (var comment in @Model.MaintenanceIssue.ResolutionComments)
+{
+    <div class="alert alert-info" role="alert">
+        @comment.Details
+        <p class="my-1 lh-1 small fst-italic">@comment.DateResolved @comment.User.UserName</p>
+    </div>
+}

@@ -4,7 +4,7 @@ namespace Assignment2Project.Models
 {
     public class IssueViewModel
     {
-        [Display(Name = "Institution")]
+        public CustomUserModel User { get; set; }
         public RoomModel Room { get; set; }
         public AssetModel Asset { get; set; }
         public MaintenanceIssueModel MaintenanceIssues { get; set; }

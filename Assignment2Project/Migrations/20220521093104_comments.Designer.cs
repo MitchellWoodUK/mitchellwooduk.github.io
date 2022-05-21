@@ -3,6 +3,7 @@ using System;
 using Assignment2Project.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assignment2Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220521093104_comments")]
+    partial class comments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
@@ -148,9 +150,9 @@ namespace Assignment2Project.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ESTATES.COM",
                             NormalizedUserName = "ADMIN@ESTATES.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKq6iRCmEQ8piqKqP5ie1brxm8cqYHZKMyRkNpKgErIiXRHw9JiwLMqV5PR3TSCDrw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDVEobnjSiVWt5QVkANE+KFjO4v2xL4Yj5K1LnP8D7zlsEcUGUpk2cgpym+ZpK2wSA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0e5c6b2c-b2ae-4677-9e5c-4b84162c68eb",
+                            SecurityStamp = "44796107-3ecb-41ba-869d-ddaf3964ecce",
                             Sname = "Admin",
                             TwoFactorEnabled = false,
                             UserName = "admin@estates.com"
@@ -219,38 +221,6 @@ namespace Assignment2Project.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("GeneralIssues");
-                });
-
-            modelBuilder.Entity("Assignment2Project.Models.GeneralResolutionModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("DateResolved")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Details")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("GeneralIssueId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("GeneralIssueModelId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GeneralIssueModelId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("GeneralResolutionModel");
                 });
 
             modelBuilder.Entity("Assignment2Project.Models.InstitutionModel", b =>
@@ -360,38 +330,6 @@ namespace Assignment2Project.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("MaintenanceIssues");
-                });
-
-            modelBuilder.Entity("Assignment2Project.Models.ResolutionModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("DateResolved")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Details")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("MaintenanceIssueId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("MaintenanceIssueModelId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MaintenanceIssueModelId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Resolutions");
                 });
 
             modelBuilder.Entity("Assignment2Project.Models.RoomCategoryModel", b =>
@@ -684,21 +622,6 @@ namespace Assignment2Project.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Assignment2Project.Models.GeneralResolutionModel", b =>
-                {
-                    b.HasOne("Assignment2Project.Models.GeneralIssueModel", null)
-                        .WithMany("ResolutionComments")
-                        .HasForeignKey("GeneralIssueModelId");
-
-                    b.HasOne("Assignment2Project.Models.CustomUserModel", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Assignment2Project.Models.MaintenanceCommentModel", b =>
                 {
                     b.HasOne("Assignment2Project.Models.MaintenanceIssueModel", null)
@@ -745,21 +668,6 @@ namespace Assignment2Project.Migrations
                     b.Navigation("Institution");
 
                     b.Navigation("Room");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Assignment2Project.Models.ResolutionModel", b =>
-                {
-                    b.HasOne("Assignment2Project.Models.MaintenanceIssueModel", null)
-                        .WithMany("ResolutionComments")
-                        .HasForeignKey("MaintenanceIssueModelId");
-
-                    b.HasOne("Assignment2Project.Models.CustomUserModel", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -837,15 +745,11 @@ namespace Assignment2Project.Migrations
             modelBuilder.Entity("Assignment2Project.Models.GeneralIssueModel", b =>
                 {
                     b.Navigation("GeneralComments");
-
-                    b.Navigation("ResolutionComments");
                 });
 
             modelBuilder.Entity("Assignment2Project.Models.MaintenanceIssueModel", b =>
                 {
                     b.Navigation("MaintenanceComments");
-
-                    b.Navigation("ResolutionComments");
                 });
 #pragma warning restore 612, 618
         }

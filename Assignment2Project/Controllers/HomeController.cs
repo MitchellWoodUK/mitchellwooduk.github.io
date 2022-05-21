@@ -38,6 +38,7 @@ namespace Assignment2Project.Controllers
             //Loops through both the list of maintenance issues and general 
             foreach (var mIssue in maintentanceIssues)
             {
+                var user = _db.Users.FirstOrDefault(i => i.Id == mIssue.UserId);
                 var room = _db.Rooms.FirstOrDefault(i => i.Id == mIssue.RoomId);
                 var asset = _db.Assets.FirstOrDefault(i => i.Id == mIssue.AssetId);
                 var maintenance = _db.MaintenanceIssues.FirstOrDefault(i => i.Id == mIssue.Id);
@@ -45,6 +46,7 @@ namespace Assignment2Project.Controllers
                 {
                     IssueViewModel issueVM = new IssueViewModel()
                     {
+                        User = user,
                         MaintenanceIssues = maintenance,
                         Room = room,
                         Asset = asset
@@ -62,14 +64,20 @@ namespace Assignment2Project.Controllers
             var institution = await _db.Institutions.Where(x => x.Id == loggedIn.InstitutionId).FirstOrDefaultAsync();
             var generalIssues = await _db.GeneralIssues.Where(x => x.InstitutionId == loggedIn.InstitutionId).ToListAsync();
             //Creates a list to populate with GeneralIssues
-            var list = new List<GeneralIssueModel>();
+            var list = new List<GeneralIssueViewModel>();
             //Loops through both the list of maintenance issues and general 
             foreach (var gIssue in generalIssues)
             {
+                var user = _db.Users.FirstOrDefault(i => i.Id == gIssue.UserId);
                 var general = _db.GeneralIssues.FirstOrDefault(i => i.Id == gIssue.Id);
                 if(general != null)
                 {
-                    list.Add(general);
+                    GeneralIssueViewModel issueVM = new GeneralIssueViewModel()
+                    {
+                        User = user,
+                        GeneralIssue = general
+                    };
+                    list.Add(issueVM);
                 }
             }
             return View(list);

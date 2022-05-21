@@ -33,10 +33,14 @@ namespace Assignment2Project.Models
 
         [Required]
         public bool IsResolved { get; set; }
+     
+
 
         public int InstitutionId { get; set; }
         [ForeignKey("InstitutionId")]
         public InstitutionModel Institution { get; set; }
         public List<MaintenanceCommentModel> MaintenanceComments { get; set; } = new List<MaintenanceCommentModel>();
+        public List<ResolutionModel> ResolutionComments { get; set; } = new List<ResolutionModel>();
+
     }
 }
