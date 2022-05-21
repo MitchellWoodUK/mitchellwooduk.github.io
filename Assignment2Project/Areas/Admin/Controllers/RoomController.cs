@@ -19,10 +19,19 @@ namespace Assignment2Project.Areas.Admin.Controllers
             _db = db;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string q)
         {
-            var rooms = await _db.Rooms.Include("Category").Include("Institution").ToListAsync();
-            return View(rooms);
+            if (q != null)
+            {
+                var rooms = await _db.Rooms.Include("Category").Where(n => n.Name.ToLower().Contains(q.ToLower())).Include("Institution").ToListAsync();
+                return View(rooms);
+            }
+            else
+            {
+                var rooms = await _db.Rooms.Include("Category").Include("Institution").ToListAsync();
+                return View(rooms);
+            }
+
         }
 
         public IActionResult Create()
@@ -64,7 +73,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -111,11 +120,11 @@ namespace Assignment2Project.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var room = await _db.Rooms.FindAsync(id);
-            if(room == null)
+            if (room == null)
             {
                 return RedirectToAction(nameof(Index));
             }
-             _db.Remove(room);
+            _db.Remove(room);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

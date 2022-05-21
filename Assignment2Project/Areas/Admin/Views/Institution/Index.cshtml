@@ -6,9 +6,25 @@
 
 <h1>Manage Institutions</h1>
 
+
+
+
 <p>
     <a asp-action="Create" class="btn btn-info">Create New</a>
 </p>
+
+
+<form method="get" class="my-3">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="search" id="q" name="q" value="@ViewData["q"]">
+                    <button class="input-group-text" id="search" type="submit">Search</button>
+                </div>
+            </div>
+        </div>
+</form>
 <table class="table">
     <thead>
         <tr>

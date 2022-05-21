@@ -11,7 +11,17 @@
     <a asp-controller="AssetCategory" asp-action="Index" class="btn btn-info">Manage Asset Categories</a>
 </div>
 
-
+<form method="get" class="my-3">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="search" id="q" name="q" value="@ViewData["q"]">
+                    <button class="input-group-text" id="search" type="submit">Search</button>
+                </div>
+            </div>
+        </div>
+</form>
 <table class="table table-striped mt-4">
     <thead class="thead-dark">
         <tr>

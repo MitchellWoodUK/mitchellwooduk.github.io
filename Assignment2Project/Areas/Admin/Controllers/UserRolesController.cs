@@ -25,27 +25,54 @@ namespace Assignment2Project.Areas.Admin.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string q)
         {
-            var users = await _userManager.Users.ToListAsync();
-            var VMlist = new List<UserRolesViewModel>();
-
-            foreach (var user in users)
+            if(q != null)
             {
-                var institution = _db.Institutions.FirstOrDefault(i => i.Id == user.InstitutionId);
-                if (institution != null)
-                {
-                    var currentVM = new UserRolesViewModel()
-                    {
-                        User = user,
-                        Roles = new List<string>(await _userManager.GetRolesAsync(user)),
-                        Institution = institution
-                    };
-                    VMlist.Add(currentVM);
-                }
+                var users = await _userManager.Users.ToListAsync();
+                var VMlist = new List<UserRolesViewModel>();
 
+                foreach (var user in users)
+                {
+                    var institution = _db.Institutions.FirstOrDefault(i => i.Id == user.InstitutionId);
+                    if (institution != null)
+                    {
+                        var currentVM = new UserRolesViewModel()
+                        {
+                            User = user,
+                            Roles = new List<string>(await _userManager.GetRolesAsync(user)),
+                            Institution = institution
+                        };
+                        VMlist.Add(currentVM);
+                    }
+
+                }
+                var list = VMlist.Where(n =>n.User.UserName.ToLower().Contains(q.ToLower())).ToList();
+                return View(list);
             }
-            return View(VMlist);
+            else
+            {
+                var users = await _userManager.Users.ToListAsync();
+                var VMlist = new List<UserRolesViewModel>();
+
+                foreach (var user in users)
+                {
+                    var institution = _db.Institutions.FirstOrDefault(i => i.Id == user.InstitutionId);
+                    if (institution != null)
+                    {
+                        var currentVM = new UserRolesViewModel()
+                        {
+                            User = user,
+                            Roles = new List<string>(await _userManager.GetRolesAsync(user)),
+                            Institution = institution
+                        };
+                        VMlist.Add(currentVM);
+                    }
+
+                }
+                return View(VMlist);
+            }
+         
         }
 
 

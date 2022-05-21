@@ -24,9 +24,18 @@ namespace Assignment2Project.Areas.Admin.Controllers
         }
 
         // GET: Admin/Institution
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string q)
         {
-            return View(await _context.Institutions.ToListAsync());
+            if(q != null)
+            {
+                return View(await _context.Institutions.Where(p => p.Name.ToLower().Contains(q.ToLower())).ToListAsync());
+
+            }
+            else
+            {
+                return View(await _context.Institutions.ToListAsync());
+
+            }
         }
 
         // GET: Admin/Institution/Details/5

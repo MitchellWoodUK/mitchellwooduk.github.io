@@ -18,10 +18,19 @@ namespace Assignment2Project.Areas.Admin.Controllers
             _db = db;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string q)
         {
-            var assets = await _db.Assets.Include("Category").Include("Room").ToListAsync();
-            return View(assets);
+            if(q != null)
+            {
+                var assets = await _db.Assets.Where(n => n.Name.ToLower().Contains(q.ToLower())).Include("Category").Include("Room").ToListAsync();
+                return View(assets);
+            }
+            else
+            {
+                var assets = await _db.Assets.Include("Category").Include("Room").ToListAsync();
+                return View(assets);
+            }
+           
         }
         
         public IActionResult Create()

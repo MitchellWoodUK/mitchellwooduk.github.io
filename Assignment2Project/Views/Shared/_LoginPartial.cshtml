@@ -29,6 +29,21 @@
                 </ul>
             </div>
         }
+        if (await UserManager.IsInRoleAsync(currentUser, "Institution_Manager"))
+        {
+            <div class="dropdown mx-2">
+                <a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    Manager Menu
+                </a>
+
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="nav-link text-dark" asp-controller="Home" asp-action="MaintenanceIssues">Maintenance Issues</a></li>
+                    <li><a class="nav-link text-dark" asp-controller="Home" asp-action="GeneralIssues">General Issues</a></li>
+
+
+                </ul>
+            </div>
+        }
 
 
 
