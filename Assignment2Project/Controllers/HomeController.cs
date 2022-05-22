@@ -21,6 +21,8 @@ namespace Assignment2Project.Controllers
             _userManager = userManager;
         }
 
+        [Authorize(Roles = "Institution_Staff")]
+
         public async Task<IActionResult> Index()
         {
             var loggedIn = await _userManager.GetUserAsync(User);
