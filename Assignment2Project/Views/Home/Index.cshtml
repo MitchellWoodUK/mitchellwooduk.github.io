@@ -1,9 +1,128 @@
-﻿@{
+﻿@model HomeViewModel;
+@{
     ViewData["Title"] = "Home Page";
 }
 
 
 <div class="my-5">
-    <a asp-controller="MaintenanceIssue" asp-action="Create" class="btn btn-info me-3">Submit a Maintenance Issue</a>
-    <a asp-controller="GeneralIssue" asp-action="Create" class="btn btn-info">Submit a General Issue</a>
+    <a asp-controller="MaintenanceIssue" asp-action="CreateStaff" class="btn btn-info me-3 fs-4">Submit a Maintenance Issue</a>
+    <a asp-controller="GeneralIssue" asp-action="CreateStaff" class="btn btn-info ms-5 fs-4">Submit a General Issue</a>
+</div>
+<div class="my-2">
+    <h4 class="header-text">Use the appropriate dropdown in the navigation bar to find more tools.</h4>
+</div>
+
+<div class="row mt-2">
+    <div class="col">
+        <div class="card shadow p-3">
+            <div class="card-header">
+                <h3 class="header-text">Rooms in Institution:</h3>
+            </div>
+            <table class="table table-striped mt-4">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var room in Model.Rooms)
+                    {
+                        <tr>
+                            <td>@room.Id</td>
+                            <td>@room.Name</td>
+                            <td>@room.Category.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="col">
+        <div class="card shadow p-3">
+            <div class="card-header">
+                <h3 class="header-text">Assets in Institution:</h3>
+            </div>
+            <table class="table table-striped mt-4">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Room</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var asset in Model.Assets)
+                    {
+                        <tr>
+                            <td>@asset.Id</td>
+                            <td>@asset.Name</td>
+                            <td>@asset.Room.Name</td>
+                            <td>@asset.Category.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col">
+        <div class="card shadow p-3">
+            <div class="card-header">
+                <h3 class="header-text">Your Current Unresolved Maintenance Issues:</h3>
+            </div>
+            <table class="table table-striped mt-4">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Date Logged</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var asset in Model.MaintenanceIssues)
+                    {
+                        <tr>
+                            <td>@asset.Id</td>
+                            <td>@asset.TimeRaised</td>
+                            <td>@asset.Details</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col">
+        <div class="card shadow p-3">
+            <div class="card-header">
+                <h3 class="header-text">Your Current Unresolved General Issues:</h3>
+            </div>
+            <table class="table table-striped mt-4">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Date Logged</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var asset in Model.GeneralIssues)
+                    {
+                        <tr>
+                            <td>@asset.Id</td>
+                            <td>@asset.DateRaised</td>
+                            <td>@asset.Details</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

@@ -21,9 +21,23 @@ namespace Assignment2Project.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var loggedIn = await _userManager.GetUserAsync(User);
+
+            var rooms = await _db.Rooms.Where(n => n.InstitutionId == loggedIn.InstitutionId).Include("Category").ToListAsync();
+            var assets = await _db.Assets.Where(n => n.Room.InstitutionId == loggedIn.InstitutionId).Include("Category").Include("Room").ToListAsync();
+            var maintenance = await _db.MaintenanceIssues.Where(n => n.UserId == loggedIn.Id).Where(n => n.IsResolved == false).ToListAsync();
+            var general = await _db.GeneralIssues.Where(n => n.UserId == loggedIn.Id).Where(n => n.IsResolved == false).ToListAsync();
+            HomeViewModel model = new HomeViewModel()
+            {
+                Rooms = rooms,
+                Assets = assets,
+                MaintenanceIssues = maintenance,
+                GeneralIssues = general
+            };
+            
+            return View(model);
         }
 
         [Authorize(Roles = "Institution_Manager")]
@@ -158,6 +172,144 @@ namespace Assignment2Project.Controllers
         }
 
 
+
+
+
+
+
+
+
+
+        [Authorize(Roles = "Institution_Staff")]
+
+        public async Task<IActionResult> MaintenanceIssuesStaff(string q)
+        {
+            if (q != null)
+            {
+                //Creates a new issueViewModel, finds the logged in user and uses the users institution to find that institutions maintenance issues and general issues.
+                var loggedIn = await _userManager.GetUserAsync(User);
+                var institution = await _db.Institutions.Where(x => x.Id == loggedIn.InstitutionId).FirstOrDefaultAsync();
+
+                var maintentanceIssues = await _db.MaintenanceIssues.Where(x => x.InstitutionId == loggedIn.InstitutionId).Where(n => n.UserId == loggedIn.Id).ToListAsync();
+
+                //Creates a list to populate with IssueViewModels
+                var VMlist = new List<IssueViewModel>();
+                //Loops through both the list of maintenance issues and general 
+                foreach (var mIssue in maintentanceIssues)
+                {
+                    var user = _db.Users.FirstOrDefault(i => i.Id == mIssue.UserId);
+                    var room = _db.Rooms.FirstOrDefault(i => i.Id == mIssue.RoomId);
+                    var asset = _db.Assets.FirstOrDefault(i => i.Id == mIssue.AssetId);
+                    var maintenance = _db.MaintenanceIssues.FirstOrDefault(i => i.Id == mIssue.Id);
+                    if (room != null && asset != null && maintenance != null)
+                    {
+                        IssueViewModel issueVM = new IssueViewModel()
+                        {
+                            User = user,
+                            MaintenanceIssues = maintenance,
+                            Room = room,
+                            Asset = asset
+                        };
+                        VMlist.Add(issueVM);
+                    }
+                }
+                //Takes the list and only returns the values where the searched input is there.
+                var list = VMlist.Where(n => n.User.UserName.ToLower().Contains(q.ToLower())).ToList();
+                return View(list);
+            }
+            else
+            {
+                //Creates a new issueViewModel, finds the logged in user and uses the users institution to find that institutions maintenance issues and general issues.
+                var loggedIn = await _userManager.GetUserAsync(User);
+                var institution = await _db.Institutions.Where(x => x.Id == loggedIn.InstitutionId).FirstOrDefaultAsync();
+
+                var maintentanceIssues = await _db.MaintenanceIssues.Where(x => x.InstitutionId == loggedIn.InstitutionId).Where(n => n.UserId == loggedIn.Id).ToListAsync();
+
+                //Creates a list to populate with IssueViewModels
+                var VMlist = new List<IssueViewModel>();
+                //Loops through both the list of maintenance issues and general 
+                foreach (var mIssue in maintentanceIssues)
+                {
+                    var user = _db.Users.FirstOrDefault(i => i.Id == mIssue.UserId);
+                    var room = _db.Rooms.FirstOrDefault(i => i.Id == mIssue.RoomId);
+                    var asset = _db.Assets.FirstOrDefault(i => i.Id == mIssue.AssetId);
+                    var maintenance = _db.MaintenanceIssues.Where(n => n.IsResolved == false).FirstOrDefault(i => i.Id == mIssue.Id);
+                    if (room != null && asset != null && maintenance != null)
+                    {
+                        IssueViewModel issueVM = new IssueViewModel()
+                        {
+                            User = user,
+                            MaintenanceIssues = maintenance,
+                            Room = room,
+                            Asset = asset
+                        };
+                        VMlist.Add(issueVM);
+                    }
+                }
+                return View(VMlist);
+            }
+
+
+        }
+        [Authorize(Roles = "Institution_Staff")]
+
+        public async Task<IActionResult> GeneralIssuesStaff(string q)
+        {
+            if (q != null)
+            {
+                //Creates a new issueViewModel, finds the logged in user and uses the users institution to find that institutions maintenance issues and general issues.
+                var loggedIn = await _userManager.GetUserAsync(User);
+                var institution = await _db.Institutions.Where(x => x.Id == loggedIn.InstitutionId).FirstOrDefaultAsync();
+                var generalIssues = await _db.GeneralIssues.Where(x => x.InstitutionId == loggedIn.InstitutionId).Where(n => n.UserId == loggedIn.Id).ToListAsync();
+                //Creates a list to populate with GeneralIssues
+                var list = new List<GeneralIssueViewModel>();
+                //Loops through both the list of maintenance issues and general 
+                foreach (var gIssue in generalIssues)
+                {
+                    var user = _db.Users.FirstOrDefault(i => i.Id == gIssue.UserId);
+                    var general = _db.GeneralIssues.FirstOrDefault(i => i.Id == gIssue.Id);
+                    if (general != null)
+                    {
+                        GeneralIssueViewModel issueVM = new GeneralIssueViewModel()
+                        {
+                            User = user,
+                            GeneralIssue = general
+                        };
+                        list.Add(issueVM);
+                    }
+                }
+                var searchedlist = list.Where(n => n.User.UserName.ToLower().Contains(q.ToLower())).ToList();
+
+                return View(searchedlist);
+            }
+            else
+            {
+                //Creates a new issueViewModel, finds the logged in user and uses the users institution to find that institutions maintenance issues and general issues.
+                var loggedIn = await _userManager.GetUserAsync(User);
+                var institution = await _db.Institutions.Where(x => x.Id == loggedIn.InstitutionId).FirstOrDefaultAsync();
+                var generalIssues = await _db.GeneralIssues.Where(x => x.InstitutionId == loggedIn.InstitutionId).Where(n => n.UserId == loggedIn.Id).ToListAsync();
+                //Creates a list to populate with GeneralIssues
+                var list = new List<GeneralIssueViewModel>();
+                //Loops through both the list of maintenance issues and general 
+                foreach (var gIssue in generalIssues)
+                {
+                    var user = _db.Users.FirstOrDefault(i => i.Id == gIssue.UserId);
+                    var general = _db.GeneralIssues.Where(n => n.IsResolved == false).FirstOrDefault(i => i.Id == gIssue.Id);
+
+                    if (general != null)
+                    {
+                        GeneralIssueViewModel issueVM = new GeneralIssueViewModel()
+                        {
+                            User = user,
+                            GeneralIssue = general
+                        };
+                        list.Add(issueVM);
+                    }
+                }
+                return View(list);
+            }
+
+        }
 
     }
 }

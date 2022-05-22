@@ -1,5 +1,6 @@
 ﻿using Assignment2Project.Data;
 using Assignment2Project.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ namespace Assignment2Project.Controllers
         {
             return View();
         }
+
+        [Authorize(Roles = "Institution_Manager")]
 
         public IActionResult Create()
         {
@@ -51,6 +54,7 @@ namespace Assignment2Project.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Roles = "Institution_Manager")]
 
         public async Task<IActionResult> Details(int id)
         {
@@ -99,6 +103,7 @@ namespace Assignment2Project.Controllers
             return RedirectToAction(nameof(Details), new { id = issue.Id });
         }
 
+        [Authorize(Roles = "Institution_Manager")]
 
         public async Task<IActionResult> Resolution(int id)
         {
@@ -139,5 +144,72 @@ namespace Assignment2Project.Controllers
 
             return RedirectToAction(nameof(Resolution), new { id = issue.Id });
         }
+
+
+
+
+        [Authorize(Roles = "Institution_Staff")]
+
+        public IActionResult CreateStaff()
+        {
+            //Passes an empty general issue model into the create view.
+            GeneralIssueModel model = new GeneralIssueModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateStaff(GeneralIssueModel model)
+        {
+            //Returns the data needed to create a general issue from the create view.
+            var loggedIn = await _userManager.GetUserAsync(User);
+
+            if (model != null)
+            {
+                GeneralIssueModel issueModel = new GeneralIssueModel();
+                issueModel.DateRaised = DateTime.Now;
+                issueModel.UserId = loggedIn.Id;
+                issueModel.Details = model.Details;
+                issueModel.IsResolved = false;
+                issueModel.InstitutionId = loggedIn.InstitutionId;
+                await _db.GeneralIssues.AddAsync(issueModel);
+                await _db.SaveChangesAsync();
+                //Redirects to the Issues action in the Home controller.
+                return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize(Roles = "Institution_Manager")]
+
+        public async Task<IActionResult> DetailsStaff(int id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("GeneralIssues", "Home");
+            }
+            var issue = await _db.GeneralIssues.Where(x => x.Id == id).FirstOrDefaultAsync();
+            issue.GeneralComments = await _db.GeneralComments.Where(x => x.GeneralIssueId == issue.Id).Include("User").OrderByDescending(x => x.TimeStamp).ToListAsync();
+            if (issue == null)
+            {
+                return RedirectToAction("GeneralIssues", "Home");
+            }
+            var VM = new GeneralIssueViewModel();
+
+            //Creates a list to populate with IssueViewModels
+            //Loops through both the list of maintenance issues and general 
+            var user = _db.Users.FirstOrDefault(i => i.Id == issue.UserId);
+            if (user != null)
+            {
+                GeneralIssueViewModel issueVM = new GeneralIssueViewModel()
+                {
+                    User = user,
+                    GeneralIssue = issue
+                };
+                VM = issueVM;
+            }
+
+            return View(VM);
+        }
+
     }
 }

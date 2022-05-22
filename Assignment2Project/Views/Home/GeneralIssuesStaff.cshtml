@@ -1,14 +1,14 @@
-﻿@model IEnumerable<IssueViewModel>
+﻿@model IEnumerable<GeneralIssueViewModel>
 @{
     ViewData["Title"] = "Issues Page";
 }
-<a asp-controller="MaintenanceIssue" asp-action="Create" class="btn btn-info mb-3">Create New Issue</a>
+<a asp-controller="GeneralIssue" asp-action="CreateStaff" class="btn btn-info mb-3">Create New Issue</a>
 
 <form method="get" class="my-3">
     <div class="container-fluid">
         <div class="row">
             <div class="col mt-3">
-                <p class="lh-1">Search by User:</p>
+                <p class="lh-1">Search by your username to find your closed tickets:</p>
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="search" id="q" name="q" value="@ViewData["q"]">
                     <button class="input-group-text" id="search" type="submit">Search</button>
@@ -19,14 +19,11 @@
 <div class="col">
     <div class="card shadow card-bg p-2">
         <div class="card-body">
-            <h3 class="mb-3 card-text">Open Maintenance Issues:</h3>
-
+            <h3 class="mb-3 card-text">Open General Issues:</h3>
             <table class="table">
                 <thead>
                     <tr>
                         <th class="card-text">Logged By</th>
-                        <th class="card-text">Room</th>
-                        <th class="card-text">Assets</th>
                         <th class="card-text">Time Raised</th>
                         <th class="card-text">Resolved?</th>
                         <th class="card-text">Manage</th>
@@ -37,12 +34,10 @@
                     {
                         <tr>
                             <td class="card-text">@issue.User.UserName</td>
-                            <td class="card-text">@issue.Room.Name</td>
-                            <td class="card-text">@issue.Asset.Name</td>
-                            <td class="card-text">@issue.MaintenanceIssues.TimeRaised</td>
-                            <td class="card-text">@(issue.MaintenanceIssues.IsResolved ? "Yes" : "No")</td>
+                            <td class="card-text">@issue.GeneralIssue.DateRaised</td>
+                            <td class="card-text">@(issue.GeneralIssue.IsResolved ? "Yes" : "No")</td>
                             <td>
-                                <a asp-controller="MaintenanceIssue" asp-action="Details" asp-route-id="@issue.MaintenanceIssues.Id" class="btn btn-info">Details</a>
+                                <a asp-controller="GeneralIssue" asp-action="DetailsStaff" asp-route-id="@issue.GeneralIssue.Id" class="btn btn-info">Details</a>
                             </td>
                         </tr>
                     }
@@ -51,3 +46,4 @@
         </div>
     </div>
 </div>
+

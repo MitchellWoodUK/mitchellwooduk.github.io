@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Assignment2Project.Models.AssetModel>
+
+@{
+    ViewData["Title"] = "Assets";
+}
+
+<h1>Asset Management</h1>
+
+<div class="mt-3">
+    <a asp-action="CreateManager" class="btn btn-info">Create New Asset</a>
+</div>
+
+<form method="get" class="my-3">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="search" id="q" name="q" value="@ViewData["q"]">
+                    <button class="input-group-text" id="search" type="submit">Search</button>
+                </div>
+            </div>
+        </div>
+</form>
+<table class="table table-striped mt-4">
+    <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Room</th>
+            <th>Category</th>
+            <th>Manage</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var asset in Model)
+        {
+            <tr>
+                <td>@asset.Id</td>
+                <td>@asset.Name</td>
+                <td>@asset.Room.Name</td>
+                <td>@asset.Category.Name</td>
+                <td>
+                    <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@asset.Id">Edit</a>
+               
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@asset.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

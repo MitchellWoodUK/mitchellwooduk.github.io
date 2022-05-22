@@ -1,0 +1,33 @@
+﻿@using Assignment2Project.Areas.Admin.Models
+@model AssetViewModel
+
+@{
+    ViewData["Title"] = "Create Asset";
+}
+
+<div>
+    <form method="post" asp-action="CreateManager">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <h1 class="mb-3">Create a New Asset</h1>
+        <hr />
+        
+        <div class="my-3">
+            @Html.DropDownListFor(m => m.SelectedRoom, Model.RoomList, "Select a room", new {@class = "form-select", id="Room"})
+            <span asp-validation-for="SelectedRoom" class="text-danger"></span>
+        </div>
+        <div class="my-3">
+            @Html.DropDownListFor(m => m.Asset.CategoryId, Model.CategoryList, "Select a category", new {@class = "form-select"})
+            <span asp-validation-for="Asset.CategoryId" class="text-danger"></span>
+        </div>
+        <div class="my-3">
+            <input asp-for="Asset.Name" class="form-control form-control" type="text" placeholder="Name">
+            <span asp-validation-for="Asset.Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success w-100">Create</button>
+        </div>
+        <div>
+            <a asp-action="Index" class="btn btn-primary mt-3">Back to List</a>
+        </div>
+    </form>
+</div>

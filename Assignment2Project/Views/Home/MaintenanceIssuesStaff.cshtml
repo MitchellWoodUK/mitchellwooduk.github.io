@@ -2,13 +2,13 @@
 @{
     ViewData["Title"] = "Issues Page";
 }
-<a asp-controller="MaintenanceIssue" asp-action="Create" class="btn btn-info mb-3">Create New Issue</a>
+<a asp-controller="MaintenanceIssue" asp-action="CreateStaff" class="btn btn-info mb-3">Create New Issue</a>
 
 <form method="get" class="my-3">
     <div class="container-fluid">
         <div class="row">
             <div class="col mt-3">
-                <p class="lh-1">Search by User:</p>
+                <p class="lh-1">Search by your username to find your closed tickets:</p>
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="search" id="q" name="q" value="@ViewData["q"]">
                     <button class="input-group-text" id="search" type="submit">Search</button>
@@ -42,7 +42,7 @@
                             <td class="card-text">@issue.MaintenanceIssues.TimeRaised</td>
                             <td class="card-text">@(issue.MaintenanceIssues.IsResolved ? "Yes" : "No")</td>
                             <td>
-                                <a asp-controller="MaintenanceIssue" asp-action="Details" asp-route-id="@issue.MaintenanceIssues.Id" class="btn btn-info">Details</a>
+                                <a asp-controller="MaintenanceIssue" asp-action="DetailsStaff" asp-route-id="@issue.MaintenanceIssues.Id" class="btn btn-info">Details</a>
                             </td>
                         </tr>
                     }
