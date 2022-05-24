@@ -25,6 +25,7 @@ namespace Assignment2Project.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //Finds the user that is logged in and then finds all rooms, assets, and issues that are linked to their institution and user.
             var loggedIn = await _userManager.GetUserAsync(User);
 
             var rooms = await _db.Rooms.Where(n => n.InstitutionId == loggedIn.InstitutionId).Include("Category").ToListAsync();

@@ -21,6 +21,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(string q)
         {
+            //Returns a list of rooms, and also includes the institution linked to the room
             if (q != null)
             {
                 var rooms = await _db.Rooms.Include("Category").Where(n => n.Name.ToLower().Contains(q.ToLower())).Include("Institution").ToListAsync();
@@ -38,6 +39,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
         {
             RoomViewModel roomViewModel = new RoomViewModel()
             {
+                //Returns a select list item of room categories and insitutions.
                 Room = new RoomModel(),
                 CategoryList = _db.RoomCategories.Select(c => new SelectListItem
                 {

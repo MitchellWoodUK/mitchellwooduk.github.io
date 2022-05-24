@@ -17,6 +17,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //Return a list of roles to the view.
             var roles = await _roleManager.Roles.ToListAsync();
             return View(roles);
         }
@@ -24,6 +25,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRole(string roleName)
         {
+            //Create a new role from the string passed into the method.
             if(roleName != null)
             {
                 await _roleManager.CreateAsync(new IdentityRole(roleName.Trim()));
@@ -33,6 +35,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
 
         public async Task<IActionResult> DeleteRole(string id)
         {
+            //Find the role by the id and remove it from the database.
             if(id != null)
             {
                 var role = await _roleManager.FindByIdAsync(id);

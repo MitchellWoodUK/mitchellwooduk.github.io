@@ -23,6 +23,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
         // GET: Admin/AssetCategory
         public async Task<IActionResult> Index()
         {
+            //Returns a list of asset categories to the index.
             return View(await _context.AssetCategories.ToListAsync());
         }
 
@@ -41,6 +42,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] AssetCategoryModel assetCategoryModel)
         {
+            //If the model is valid then add it to the database and save the changes.
             if (ModelState.IsValid)
             {
                 _context.Add(assetCategoryModel);
@@ -53,16 +55,18 @@ namespace Assignment2Project.Areas.Admin.Controllers
         // GET: Admin/AssetCategory/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            //If the id is null then return not found.
             if (id == null || _context.AssetCategories == null)
             {
                 return NotFound();
             }
-
+            //Find the category model by the id.
             var assetCategoryModel = await _context.AssetCategories.FindAsync(id);
             if (assetCategoryModel == null)
             {
                 return NotFound();
             }
+            //Return the correct model to the view.
             return View(assetCategoryModel);
         }
 
@@ -80,6 +84,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
+                //If the model isnt null then try to update the model in the database and save the changes.
                 try
                 {
                     _context.Update(assetCategoryModel);

@@ -90,6 +90,7 @@ namespace Assignment2Project.Controllers
         [HttpPost]
         public async Task<IActionResult> AddComment(string comment, int id)
         {
+            //Finds the issue from the database where the id is the same and then adds a comment to the list of comments in the model.
             var issue = await _db.GeneralIssues.Where(x => x.Id == id).FirstOrDefaultAsync();
             issue.GeneralComments.Add(new GeneralCommentModel
             {
@@ -111,25 +112,29 @@ namespace Assignment2Project.Controllers
             {
                 return RedirectToAction("GeneralIssues", "Home");
             }
+            //Finds the correct issue from the database using the id.
             var issue = await _db.GeneralIssues.Where(x => x.Id == id).FirstOrDefaultAsync();
 
             if (issue == null)
             {
                 return RedirectToAction("GeneralIssues", "Home");
             }
+            //Creates a new view model and adds the issue and a new resolution model.
             GeneralResolutionViewModel resVM = new GeneralResolutionViewModel()
             {
                 GeneralIssue = issue,
                 Resolution = new ResolutionModel()
             };
-
+            //Returns the view model.
             return View(resVM);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddResolution(string details, int id)
         {
+            //finds the issue from the database using the id.
             var issue = await _db.GeneralIssues.Where(n => n.Id == id).FirstOrDefaultAsync();
+            //Adds a resolution comment to the issue that was found and updates it in the database.
             issue.ResolutionComments.Add(new GeneralResolutionModel
             {
                 GeneralIssueId = id,

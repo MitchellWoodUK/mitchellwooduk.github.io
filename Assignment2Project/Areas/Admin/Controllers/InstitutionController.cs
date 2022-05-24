@@ -26,6 +26,8 @@ namespace Assignment2Project.Areas.Admin.Controllers
         // GET: Admin/Institution
         public async Task<IActionResult> Index(string q)
         {
+            //checks if the searched value is null or not, if it is not then return a list of institutions where the name matches the value.
+            //If q is null then just return a list of institutions.
             if(q != null)
             {
                 return View(await _context.Institutions.Where(p => p.Name.ToLower().Contains(q.ToLower())).ToListAsync());
@@ -41,6 +43,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
         // GET: Admin/Institution/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            //Finds the specific institution by the id passed in and then outputs it to the view.
             if (id == null)
             {
                 return NotFound();

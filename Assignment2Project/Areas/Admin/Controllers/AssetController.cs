@@ -25,6 +25,8 @@ namespace Assignment2Project.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(string q)
         {
+            //Return a list of Assets, including the categories and rooms connecting to them.
+            //Checks against the search value if q is not null.
             if(q != null)
             {
                 var assets = await _db.Assets.Where(n => n.Name.ToLower().Contains(q.ToLower())).Include("Category").Include("Room").ToListAsync();
@@ -42,6 +44,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
+            //Returns a view model containing a select list item of the institutions, rooms, and asset categories.
             AssetViewModel assetViewModel = new AssetViewModel()
             {
                 Asset = new AssetModel(),
@@ -69,6 +72,9 @@ namespace Assignment2Project.Areas.Admin.Controllers
         [HttpGet]
         public IEnumerable<SelectListItem> GetRooms(int selectedInstitution)
         {
+            //If the passed insitution is not null then made a list of rooms from the database
+            //where the institution is the same as the id passed to the method.
+            //Return the select list of rooms.
             if(selectedInstitution != null)
             {
                 var RoomList = _db.Rooms
@@ -89,6 +95,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AssetViewModel model)
         {
+            //If the model is not null then pull in all the necessary values from model to populate an AssetModel and save it to the database.
             if (model != null)
             {
                 AssetModel assetModel = new AssetModel();
@@ -116,6 +123,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            //Returns select list items to the view for editing the object.
             AssetViewModel assetViewModel = new AssetViewModel()
             {
                 Asset = assetModel,
@@ -143,6 +151,8 @@ namespace Assignment2Project.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(AssetViewModel model)
         {
+            //If the model is not null then pull in all the necessary values from model to populate an AssetModel and update it to the database.
+
             if (model != null)
             {
                 AssetModel assetModel = new AssetModel();
@@ -159,6 +169,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
+            //Find the asset based on the id passed to the method and then remove the asset from the database and save the changes.
             var asset = await _db.Assets.FindAsync(id);
             if (asset == null)
             {
@@ -172,6 +183,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
         [Authorize(Roles = "Institution_Manager")]
         public async Task<IActionResult> IndexManager(string q)
         {
+            //Index method for the manager role.
             var loggedIn = await _userManager.GetUserAsync(User);
 
             if (q != null)
@@ -191,6 +203,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
 
         public async Task<IActionResult> CreateManager()
         {
+            //create method for the manager role.
             var loggedIn =  await _userManager.GetUserAsync(User);
 
             AssetViewModel assetViewModel = new AssetViewModel()
@@ -220,6 +233,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateManager(AssetViewModel model)
         {
+            //create post method for the manager role.
             if (model != null)
             {
                 AssetModel assetModel = new AssetModel();
@@ -241,6 +255,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
 
         public async Task<IActionResult> IndexStaff(string q)
         {
+            //index method for the staff role.
             var loggedIn = await _userManager.GetUserAsync(User);
 
             if (q != null)
