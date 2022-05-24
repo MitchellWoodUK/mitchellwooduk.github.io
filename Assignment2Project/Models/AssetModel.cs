@@ -8,7 +8,6 @@ namespace Assignment2Project.Models
     {
         [Key]
         public int Id { get; set; }
-
         [Required(ErrorMessage = ("Rooms Need to Have a Name."))]
         [MaxLength(50)]
         public string Name { get; set; }

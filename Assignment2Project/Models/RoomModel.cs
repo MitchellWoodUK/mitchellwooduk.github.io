@@ -7,16 +7,13 @@ namespace Assignment2Project.Models
     {
         [Key]
         public int Id { get; set; }
-
         [Required(ErrorMessage = ("Rooms Need to Have a Name."))]
         [MaxLength(50)]
         public string Name { get; set; }
         [Required]
         public int InstitutionId { get; set; }
-
         [ForeignKey("InstitutionId")]
         public InstitutionModel Institution { get; set; }
-
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public RoomCategoryModel Category { get; set; }

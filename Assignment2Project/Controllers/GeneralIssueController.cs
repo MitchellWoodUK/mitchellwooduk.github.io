@@ -150,9 +150,6 @@ namespace Assignment2Project.Controllers
             return RedirectToAction(nameof(Resolution), new { id = issue.Id });
         }
 
-
-
-
         [Authorize(Roles = "Institution_Staff")]
 
         public IActionResult CreateStaff()
@@ -185,7 +182,6 @@ namespace Assignment2Project.Controllers
         }
 
         [Authorize(Roles = "Institution_Manager")]
-
         public async Task<IActionResult> DetailsStaff(int id)
         {
             if (id == null)
@@ -212,9 +208,7 @@ namespace Assignment2Project.Controllers
                 };
                 VM = issueVM;
             }
-
             return View(VM);
         }
-
     }
 }

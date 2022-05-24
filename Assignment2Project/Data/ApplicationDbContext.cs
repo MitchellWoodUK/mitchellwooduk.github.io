@@ -24,7 +24,7 @@ namespace Assignment2Project.Data
         {
         }
 
-
+        //Calls the methods when the database is created.
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -34,6 +34,7 @@ namespace Assignment2Project.Data
             SeedUserRoles(builder);
         }
 
+        //Method to seed 4 roles when the database is first created.
         private void SeedRoles(ModelBuilder builder)
         {
             builder.Entity<IdentityRole>().HasData(
@@ -74,7 +75,7 @@ namespace Assignment2Project.Data
             );
         }
 
-
+        //Seeds the default institution so that it is not blank.
         private void SeedInstitution(ModelBuilder builder)
         {
             InstitutionModel institution = new InstitutionModel()
@@ -87,6 +88,7 @@ namespace Assignment2Project.Data
             builder.Entity<InstitutionModel>().HasData(institution);
         }
 
+        //Seeds the admin account and gives all the necessary data.
         private void SeedAdmin(ModelBuilder builder)
         {
             PasswordHasher<CustomUserModel> hasher = new PasswordHasher<CustomUserModel>();
@@ -106,6 +108,7 @@ namespace Assignment2Project.Data
 
         }
 
+        //Assigns the roles to the admin account
         private void SeedUserRoles(ModelBuilder builder)
         {
             builder.Entity<IdentityUserRole<string>>().HasData(

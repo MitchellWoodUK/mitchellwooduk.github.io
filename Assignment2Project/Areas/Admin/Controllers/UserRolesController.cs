@@ -24,7 +24,6 @@ namespace Assignment2Project.Areas.Admin.Controllers
             _db = db;
         }
 
-
         public async Task<IActionResult> Index(string q)
         {
             if(q != null)
@@ -48,7 +47,6 @@ namespace Assignment2Project.Areas.Admin.Controllers
                         };
                         VMlist.Add(currentVM);
                     }
-
                 }
                 //Returns the list of user roles view model to the view.
                 var list = VMlist.Where(n =>n.User.UserName.ToLower().Contains(q.ToLower())).ToList();
@@ -78,7 +76,6 @@ namespace Assignment2Project.Areas.Admin.Controllers
             }
          
         }
-
 
         //GET
         public async Task<IActionResult> Manage(string id)

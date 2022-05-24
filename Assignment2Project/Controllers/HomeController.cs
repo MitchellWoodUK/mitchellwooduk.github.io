@@ -174,15 +174,6 @@ namespace Assignment2Project.Controllers
            
         }
 
-
-
-
-
-
-
-
-
-
         [Authorize(Roles = "Institution_Staff")]
 
         public async Task<IActionResult> MaintenanceIssuesStaff(string q)
@@ -311,8 +302,6 @@ namespace Assignment2Project.Controllers
                 }
                 return View(list);
             }
-
         }
-
     }
 }

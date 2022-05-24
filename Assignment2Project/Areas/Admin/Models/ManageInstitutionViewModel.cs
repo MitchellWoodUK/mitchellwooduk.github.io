@@ -7,8 +7,6 @@ namespace Assignment2Project.Areas.Admin.Models
     public class ManageInstitutionViewModel
     {
         public CustomUserModel User { get; set; }
-
         public IEnumerable<SelectListItem> InstitutionList { get; set; }
-
     }
 }

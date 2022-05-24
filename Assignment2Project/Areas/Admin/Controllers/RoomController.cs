@@ -130,7 +130,5 @@ namespace Assignment2Project.Areas.Admin.Controllers
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-
     }
 }

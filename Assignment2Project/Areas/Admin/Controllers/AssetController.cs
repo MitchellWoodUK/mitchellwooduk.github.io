@@ -67,8 +67,6 @@ namespace Assignment2Project.Areas.Admin.Controllers
             return View(assetViewModel);
         }
 
-       
-
         [HttpGet]
         public IEnumerable<SelectListItem> GetRooms(int selectedInstitution)
         {
@@ -89,9 +87,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
             }
             return null;
         }
-
         
-
         [HttpPost]
         public async Task<IActionResult> Create(AssetViewModel model)
         {
@@ -110,8 +106,6 @@ namespace Assignment2Project.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
 
         }
-
-
         public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
@@ -146,7 +140,6 @@ namespace Assignment2Project.Areas.Admin.Controllers
 
             return View(assetViewModel);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Edit(AssetViewModel model)
@@ -200,7 +193,6 @@ namespace Assignment2Project.Areas.Admin.Controllers
         }
 
         [Authorize(Roles = "Institution_Manager")]
-
         public async Task<IActionResult> CreateManager()
         {
             //create method for the manager role.
@@ -228,8 +220,6 @@ namespace Assignment2Project.Areas.Admin.Controllers
             return View(assetViewModel);
         }
 
-
-
         [HttpPost]
         public async Task<IActionResult> CreateManager(AssetViewModel model)
         {
@@ -249,10 +239,7 @@ namespace Assignment2Project.Areas.Admin.Controllers
 
         }
 
-
-
         [Authorize(Roles = "Institution_Staff")]
-
         public async Task<IActionResult> IndexStaff(string q)
         {
             //index method for the staff role.
@@ -268,7 +255,6 @@ namespace Assignment2Project.Areas.Admin.Controllers
                 var assets = await _db.Assets.Where(n => n.Room.InstitutionId == loggedIn.InstitutionId).Include("Category").Include("Room").ToListAsync();
                 return View(assets);
             }
-
         }
     }
 }
